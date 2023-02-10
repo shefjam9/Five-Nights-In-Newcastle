@@ -1,9 +1,10 @@
 import pygame
 from obstacle import Obstacle
+from logger import log
 
 class Glass(Obstacle):
 
-    def __init__(self, time):
+    def __init__(self, time: float, x: int, y: int):
         super().__init__(time, x, y)
         
 

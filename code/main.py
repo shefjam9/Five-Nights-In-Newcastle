@@ -2,6 +2,7 @@ import pygame
 from objects.player import Player
 from pygame.locals import K_ESCAPE, KEYDOWN, QUIT
 from settings import *
+from logger import log
 import time
 
 # Initialize pygame
@@ -58,4 +59,6 @@ def run_game():
 
 
 if __name__ == "__main__":
+    log("Loading game...", type="info")
+    log(f"Screen size: {SCREEN_WIDTH}x{SCREEN_HEIGHT}")
     run_game()

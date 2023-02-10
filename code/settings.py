@@ -1,4 +1,5 @@
 import pygame
+from logger import log
 
 SCREEN_WIDTH = 1080
 SCREEN_HEIGHT = 720
@@ -12,3 +13,6 @@ def check_full_screen():
     if not(x == 0 or y == 0):
         SCREEN_WIDTH = x
         SCREEN_HEIGHT = y
+
+# Check full screen
+check_full_screen()
