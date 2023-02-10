@@ -8,6 +8,9 @@ import time
 # Initialize pygame
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Five Nights at Newcastle")
+bg_img = pygame.image.load("assets/bg.jpg")
+bg_img = pygame.transform.scale(bg_img, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 _entities = []
 
@@ -32,8 +35,9 @@ def get_current_time() -> float:
 def run_game():
     """Main game loop"""
     running = True
+    player = Player()
+    add_entity(player)
 
-    add_entity(Player())
     # Main loop
     while running:
         # Event loop
@@ -50,9 +54,12 @@ def run_game():
         for ent in _entities:
           ent.update(pressed_keys, get_current_time())
 
-        # Fill the screen with black, update screen
+        # Render background
         screen.fill((0, 0, 0))
-        # render entities
+        screen.blit(bg_img, (player.rect.x, 0))
+        screen.blit(bg_img, (0, player.rect.y))
+
+        # Render entities
         for ent in _entities:
             screen.blit(ent.surf, ent.rect)
         pygame.display.flip()
