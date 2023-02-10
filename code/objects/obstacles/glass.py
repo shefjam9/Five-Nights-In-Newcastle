@@ -4,11 +4,11 @@ from obstacle import Obstacle
 class Glass(Obstacle):
 
     def __init__(self, time):
-        self.placementTime = time
+        super().__init__(time, x, y)
         
-    def drop():
-
-      pass
 
     def update(keys, time):
+       # TODO
+       # update animation sequence
+       # determine if finished falling?
        pass

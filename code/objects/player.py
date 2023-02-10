@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         return (self.rect.left > 0 and self.rect.right < SCREEN_WIDTH 
                 and self.rect.top > 0 and self.rect.bottom < SCREEN_HEIGHT)
 
-    def update(self, key_pressed):
+    def update(self, key_pressed, current_time: float):
         """Update the player position based on key presses"""
         key_results = {K_w: (0, -self.speed), K_s: (0, self.speed), 
                        K_a: (-self.speed, 0), K_d: (self.speed, 0)}
