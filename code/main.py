@@ -1,4 +1,5 @@
 import pygame
+from objects.player import Player
 
 # Keyboard inputs
 from pygame.locals import (
@@ -15,8 +16,9 @@ SCREEN_HEIGHT = 600
 # Initialize pygame
 pygame.init()
 
-# Create a screen
+# Create a screen and player
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+player = Player()
 
 def run_game():
     # Game loop
@@ -24,34 +26,24 @@ def run_game():
 
     # Main loop
     while running:
-    # Look at every event in the queue
+        # for loop through the event queue
         for event in pygame.event.get():
-            # Did the user hit a key?
+            # Check for KEYDOWN event
             if event.type == KEYDOWN:
-                # Was it the Escape key? If so, stop the loop.
+                # If the Esc key is pressed, then exit the main loop
                 if event.key == K_ESCAPE:
                     running = False
-
-            # Did the user click the window close button? If so, stop the loop.
+            # Check for QUIT event. If QUIT, then set running to false.
             elif event.type == QUIT:
                 running = False
 
-        # Fill the screen with white
-        screen.fill((255, 255, 255))
+        # Fill the screen with black
+        screen.fill((0, 0, 0))
 
-        # Create a surface and pass in a tuple containing its length and width
-        surf = pygame.Surface((50, 50))
+        # Draw the player on the screen
+        screen.blit(player.surf, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
 
-        # Give the surface a color to separate it from the background
-        surf.fill((0, 0, 0))
-        rect = surf.get_rect()
-        surf_center = (
-            (SCREEN_WIDTH-surf.get_width())/2,
-            (SCREEN_HEIGHT-surf.get_height())/2
-        )
-
-        # Draw the surface onto the screen
-        screen.blit(surf, surf_center)
+        # Update the display
         pygame.display.flip()
 
 
