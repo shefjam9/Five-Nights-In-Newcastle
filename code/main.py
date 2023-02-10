@@ -1,3 +1,4 @@
+import sys
 import pygame
 
 # Initialize pygame
@@ -25,6 +26,7 @@ def run_game():
             
     # End game
     pygame.quit()
+    sys.exit(0)
 
 if __name__ == "__main__":
     run_game()
