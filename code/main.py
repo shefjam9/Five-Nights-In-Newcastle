@@ -1,3 +1,4 @@
+import sys
 import pygame
 
 # Keyboard inputs
@@ -39,20 +40,7 @@ def run_game():
         # Fill the screen with white
         screen.fill((255, 255, 255))
 
-        # Create a surface and pass in a tuple containing its length and width
-        surf = pygame.Surface((50, 50))
-
-        # Give the surface a color to separate it from the background
-        surf.fill((0, 0, 0))
-        rect = surf.get_rect()
-        surf_center = (
-            (SCREEN_WIDTH-surf.get_width())/2,
-            (SCREEN_HEIGHT-surf.get_height())/2
-    )
-
-        # Draw the surface onto the screen
-        screen.blit(surf, surf_center)
-        pygame.display.flip()
+            # Update
 
 
 if __name__ == "__main__":
