@@ -3,11 +3,12 @@ from misc.logger import log
 
 class Obstacle:
 
-    def __init__(self, time, x, y):
+    def __init__(self, time, x, y, player):
         self.placementTime = time
         self.start_x, self.start_y = x, y
         self._fade_in_time = 1e3
         self._fade_in_radius = 5
+        self.player = player
         self.rect = pygame.Rect(x, y, 64, 64)
         self.surf = pygame.Surface((64, 64), pygame.SRCALPHA)
 

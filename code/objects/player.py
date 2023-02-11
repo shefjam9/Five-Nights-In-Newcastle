@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = self.default_speed
         self.bg_img = bg_img
         self.wall = (75, 221, 161, 255)
+        self.collision = False
 
         # Move player
         self.start_pos = Pos(SCREEN_CENTER[0], SCREEN_CENTER[1])
@@ -46,6 +47,8 @@ class Player(pygame.sprite.Sprite):
     def update(self, key_pressed):
         """Update the player position based on key presses"""
         has_moved = False
+        if self.boundary_check():
+            self.collision = False
         key_results = {K_w: (0, -self.speed), K_s: (0, self.speed), 
                        K_a: (-self.speed, 0), K_d: (self.speed, 0)}
         for key in key_results:
@@ -61,6 +64,7 @@ class Player(pygame.sprite.Sprite):
                     self.bg_tile[0] -= key_results[key][0]
                     self.bg_tile[1] -= key_results[key][1]
                     self.rect.move_ip(-key_results[key][0], -key_results[key][1])
+                    self.collision = True
                     has_moved = False
                 if self.check_collision(self.wall):
                     self.rel.x -= key_results[key][0]
