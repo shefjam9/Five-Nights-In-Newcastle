@@ -10,7 +10,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Five Nights at Newcastle")
 
 # Creating background image and tiles
-bg_img = pygame.image.load("assets/newcastle.png").convert() 
+bg_img = pygame.image.load("assets/test.png").convert() 
 
 
 if __name__ == "__main__":

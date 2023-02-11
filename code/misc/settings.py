@@ -15,3 +15,4 @@ def check_full_screen():
 
 # Check full screen
 check_full_screen()
+SCREEN_CENTER = [round(SCREEN_WIDTH / 2), round(SCREEN_HEIGHT / 2)]

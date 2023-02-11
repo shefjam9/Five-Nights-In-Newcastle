@@ -13,7 +13,8 @@ class MainLoop:
     def __init__(self, screen: pygame.Surface, bg_img: pygame.Surface) -> None:
         self.current_game_state = GameState.HOME
         self.screen = screen
-        self.player = Player()
+        self.player = Player(bg_img)
+        self.bg_img = bg_img
         self.game_loop = GameLoop(self.screen, self.player, bg_img)
         self.home_loop = HomeLoop(self.screen, self)
         self.clock = pygame.time.Clock()
