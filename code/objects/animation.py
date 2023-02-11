@@ -1,11 +1,11 @@
 import pygame
-
+import random
 
 
 class Animation:
     
 
-    def __init__(self, path: str, w: int, h: int, num_frames: int, upf: int):
+    def __init__(self, path: str, w: int, h: int, num_frames: int, upf: int, upper_bound: int = 0):
         """
         path: path to sprite sheet
         w: width of one frame
@@ -18,7 +18,10 @@ class Animation:
         self.current_updates = 0
         self.num_frames = num_frames
         self.width, self.height = w, h
-        self.updates_per_frame = upf
+        if not upper_bound:
+          self.updates_per_frame = upf
+        else:
+            self.updates_per_frame = random.randint(upf, upper_bound)
     
     def update(self, time):
         """ Update animation so frames change """
