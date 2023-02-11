@@ -1,5 +1,6 @@
 import pygame
 import time
+import random
 from misc.settings import *
 from misc.colours import Colours
 from text.text import HeaderText
@@ -22,7 +23,8 @@ class GameLoop:
 
         # Add entities
         self.add_entity(self.player)
-        self.add_entity(Glass(time.perf_counter()*1e3, 100, 100, self.player))
+        for _ in range(10):
+            self.add_entity(Glass(time.perf_counter()*1e3, random.randint(100, 1200), random.randint(100, 1200), self.player))
 
     def add_entity(self, entity: pygame.sprite.Sprite):
         """Add an entity to the game (needs update method)"""
@@ -63,14 +65,15 @@ class GameLoop:
         if tile_x > -self.bg_img.get_width() - self.player.rel.x:
             self.screen.blit(self.bg_img, (tile_x, tile_y))
 
-        title_position = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.2))
-        title_position_2 = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.3))
-        self.header_text.render(f"Collision: {player_collision}, ({self.player.rect.left},{self.player.rect.top})", self.header_text.primary, title_position, True)
-        self.header_text.render(f"Has Move: {has_moved}, ({self.player.rel.x},{self.player.rel.y})", self.header_text.primary, title_position_2, True)
+        # title_position = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.2))
+        # title_position_2 = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.3))
+        # self.header_text.render(f"Collision: {player_collision}, ({self.player.rect.left},{self.player.rect.top})", self.header_text.primary, title_position, True)
+        # self.header_text.render(f"Has Move: {has_moved}, ({self.player.rel.x},{self.player.rel.y})", self.header_text.primary, title_position_2, True)
 
         # Render entities
         for ent in self.entities:
             if ent != self.player:
                 self.screen.blit(ent.surf, ent.rect)
         self.screen.blit(self.player.surf, self.player.rect)
+        self.player.set_entities(self.entities)
         pygame.display.flip()
