@@ -13,11 +13,11 @@ class Glass(Obstacle):
 
     def update(self, key_pressed, time):
         if super().fade_in(time):
-           self.surf.fill(0)
            pygame.draw.circle(self.surf, (255, 0, 0, 50), (32, 32), self._fade_in_radius)
            return
         
         if not self.filled:
+          self.surf.fill(0)
           self.surf.blit(self.texture, (0, 0))
           self.filled = True
         else:
