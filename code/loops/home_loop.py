@@ -23,6 +23,9 @@ class HomeLoop:
         self.generate_single_button(self.settings_button_callback,
                                     Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.5)), 
                                     "SETTINGS")
+        self.generate_single_button(self.quit_button_callback,
+                                    Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.6)), 
+                                    "QUIT")
 
     def generate_single_button(self, callback, pos: Pos, text: str):
         """Generate single button"""
@@ -49,13 +52,6 @@ class HomeLoop:
         # Reload screen
         pygame.display.flip()
 
-    def play_button_callback(self):
-        log("Play button pressed")
-        self.main_loop.current_game_state = GameState.GAME
-
-    def settings_button_callback(self):
-        log("Settings button pressed")
-
     def check_pressed(self, event):
         """Check if button is pressed"""
         for button in self.buttons:
@@ -68,3 +64,18 @@ class HomeLoop:
                 button[1].highlighted = True
             else:
                 button[1].highlighted = False
+
+    #############
+    # Callbacks #
+    #############
+
+    def play_button_callback(self):
+        log("Play button pressed")
+        self.main_loop.current_game_state = GameState.GAME
+
+    def settings_button_callback(self):
+        log("Settings button pressed")
+
+    def quit_button_callback(self):
+        log("Quit button pressed")
+        self.main_loop.current_game_state = GameState.QUIT

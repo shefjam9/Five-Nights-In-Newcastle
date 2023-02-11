@@ -26,11 +26,10 @@ class MainLoop:
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
-                        running = False
-                    elif event.key == K_p:
-                        self.current_game_state = GameState.HOME
-                    elif event.key == K_o:
-                        self.current_game_state = GameState.GAME
+                        if self.current_game_state == GameState.GAME:
+                            self.current_game_state = GameState.HOME
+                        elif self.current_game_state == GameState.HOME:
+                            running = False
                 elif event.type == QUIT:
                     running = False
                 elif event.type == MOUSEBUTTONDOWN:
@@ -43,6 +42,8 @@ class MainLoop:
                 self.home_loop.check_hover()
             elif self.current_game_state == GameState.GAME:
                 self.game_loop.tick()
+            elif self.current_game_state == GameState.QUIT:
+                running = False
 
             # Tick clock
             self.clock.tick()
