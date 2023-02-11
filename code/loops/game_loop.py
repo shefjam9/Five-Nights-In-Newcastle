@@ -3,7 +3,7 @@ import time
 import random
 from misc.settings import *
 from misc.colours import Colours
-from text.text import HeaderText
+from text.text import ButtonText
 from objects.pos import Pos
 from objects.player import Player
 
@@ -17,7 +17,7 @@ class GameLoop:
         self.bg_img = bg_img
         self.entities = []
         self.tile = [self.player.rect.x - (bg_img.get_width()/2), self.player.rect.y - (bg_img.get_height()/2)]
-        self.header_text = HeaderText(self.screen)
+        self.health_text = ButtonText(self.screen)
         self.camera = self.screen.get_rect().copy()
 
         # Add entities
@@ -62,16 +62,18 @@ class GameLoop:
         if tile_x > -self.bg_img.get_width() - self.player.rel.x:
             self.screen.blit(self.bg_img, (tile_x, tile_y))
 
-        # title_position = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.2))
-        # title_position_2 = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.3))
-        # self.header_text.render(f"Collision: {player_collision}, ({self.player.rect.left},{self.player.rect.top})", self.header_text.primary, title_position, True)
-        # self.header_text.render(f"Has Move: {has_moved}, ({self.player.rel.x},{self.player.rel.y})", self.header_text.primary, title_position_2, True)
+        # Update health text
+        self.display_health()
 
         # Render entities
         for ent in self.entities:
             if ent != self.player:
-                #ent.adjust_position()
                 self.screen.blit(ent.surf, ent.rect)
         self.screen.blit(self.player.surf, self.player.rect)
         self.player.set_entities(self.entities)
         pygame.display.flip()
+
+    def display_health(self):
+        """Display the health in the top right of the screen"""
+        title_position = Pos(140, 40)
+        self.health_text.render(f"Health: {self.player.health}%", self.health_text.primary, title_position, True)

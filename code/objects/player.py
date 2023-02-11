@@ -12,13 +12,19 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.Surface((75, 25))
         self.surf.fill((0, 0, 0))
         self.rect = self.surf.get_rect()
+
+        # Speeds and health
+        self.health = 100
         self.default_speed = 1
         self.sprint_speed = 2
         self.speed = self.default_speed
+
+        # Collisions
         self.bg_img = bg_img
         self.wall = (75, 221, 161, 255)
         self.collision = False
-        self.health = 100
+        self.entities = []
+        self.ignore_entity_collision = []
 
         # Move player
         self.start_pos = Pos(SCREEN_CENTER[0], SCREEN_CENTER[1])
@@ -28,10 +34,6 @@ class Player(pygame.sprite.Sprite):
         # Relative positions
         self.rel = self.start_pos
         self.obj_offset = Pos(0, 0)
-
-        # Entities for collision
-        self.entities = []
-        self.ignore_entity_collision = []
 
     def boundary_check(self):
         """Check if player is within screen bounds"""
@@ -69,6 +71,7 @@ class Player(pygame.sprite.Sprite):
         has_moved = False
         if self.boundary_check():
             self.collision = False
+
         key_results = {K_w: (0, -self.speed), K_s: (0, self.speed), 
                        K_a: (-self.speed, 0), K_d: (self.speed, 0)}
         for key in key_results:
