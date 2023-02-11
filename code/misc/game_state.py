@@ -2,7 +2,6 @@ from enum import Enum
 from misc.settings import *
 
 class GameState(Enum):
-    """Enum for game stat"""
+    """Enum for game states"""
     HOME = 1
     GAME = 2
-GameState = Enum("GameState", ["HOME", "GAME"])

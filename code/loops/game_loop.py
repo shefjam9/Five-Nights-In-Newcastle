@@ -1,6 +1,7 @@
 import pygame
 import time
 from misc.settings import *
+from misc.colours import Colours
 from objects.player import Player
 
 class GameLoop:
@@ -40,7 +41,7 @@ class GameLoop:
             ent.update(pressed_keys, self.get_current_time())
 
         # Render background
-        self.screen.fill((255, 0, 0))
+        self.screen.fill(Colours.DARK_BACKGROUND.value)
         tile_x = self.tile[0]
         tile_y = self.tile[1]
 
