@@ -22,7 +22,7 @@ class Pigeon(Obstacle):
                       PigeonState.STATE_PECKING: Animation("assets/pigeon_pecking.png", 96, 64, 4, 40)}
         self.see_player_range = 400
         self.current_state = PigeonState.STATE_PECKING
-        self.speed = 0.4
+        self.speed = 1
 
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
@@ -43,5 +43,5 @@ class Pigeon(Obstacle):
             self.surf.fill(0)
             self.anims[self.current_state].update(time)
             self.anims[self.current_state].render_frame(self.surf, 0, 0)
-        self.run_ai(time)
+            self.run_ai(time)
         self.adjust_position()
