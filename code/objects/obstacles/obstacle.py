@@ -14,6 +14,7 @@ class Obstacle:
         self.rect = pygame.Rect(x, y, w, h)
         self.surf = pygame.Surface((w, h), pygame.SRCALPHA)
         self.rel = Pos(x, y)
+        self.movement_amount = Pos(0, 0)
         self.damage_amount = 0
         self.has_damaged = False
 
@@ -23,12 +24,12 @@ class Obstacle:
     def adjust_position(self):
         rel_x = self.player.obj_offset.x + self.start_x
         rel_y = self.player.obj_offset.y + self.start_y
-        self.rect.x = rel_x
-        self.rect.y = rel_y
+        self.rect.x = rel_x + self.movement_amount.x
+        self.rect.y = rel_y + self.movement_amount.y
 
     def move(self, x_amount, y_amount):
-        self.rect.x += x_amount
-        self.rect.y += y_amount
+        self.movement_amount.x += x_amount
+        self.movement_amount.y += y_amount
 
     def fade_in(self, time) -> bool:
         if time - self.placementTime <= self._fade_in_time:
