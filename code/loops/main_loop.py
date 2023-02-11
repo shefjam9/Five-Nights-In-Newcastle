@@ -5,7 +5,7 @@ from misc.game_state import GameState
 from loops.game_loop import GameLoop
 from loops.home_loop import HomeLoop
 from objects.player import Player
-from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, K_p, K_o, MOUSEBUTTONDOWN
+from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, K_LSHIFT, MOUSEBUTTONDOWN, KEYUP
 
 class MainLoop:
     """Main game loop"""
@@ -31,6 +31,11 @@ class MainLoop:
                             self.current_game_state = GameState.HOME
                         elif self.current_game_state == GameState.HOME:
                             running = False
+                    if event.key == K_LSHIFT:
+                        self.player.set_sprint(True)
+                elif event.type == KEYUP:
+                    if event.key == K_LSHIFT:
+                        self.player.set_sprint(False)
                 elif event.type == QUIT:
                     running = False
                 elif event.type == MOUSEBUTTONDOWN:

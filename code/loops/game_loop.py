@@ -5,6 +5,7 @@ from misc.colours import Colours
 from text.text import HeaderText
 from objects.pos import Pos
 from objects.player import Player
+from objects.obstacles.glass import Glass
 
 class GameLoop:
     """Game loop class"""
@@ -21,6 +22,7 @@ class GameLoop:
 
         # Add entities
         self.add_entity(self.player)
+        self.add_entity(Glass(time.perf_counter()*1e3, 100, 100))
 
     def add_entity(self, entity: pygame.sprite.Sprite):
         """Add an entity to the game (needs update method)"""
@@ -48,6 +50,10 @@ class GameLoop:
         has_moved = self.player.update(pressed_keys)
         self.camera.center = self.player.rect.center
 
+        for ent in self.entities:
+            if ent != self.player:
+                ent.update(pressed_keys, self.get_current_time())
+
         # Render background
         self.screen.fill(Colours.SECONDARY.value)
         tile_x = self.tile[0]
@@ -67,8 +73,5 @@ class GameLoop:
 
         # Render entities
         for ent in self.entities:
-            if ent == self.player:
-                self.screen.blit(ent.surf, ent.rect)
-            else:
-                self.screen.blit(ent.surf, ent.rect)
+            self.screen.blit(ent.surf, ent.rect)
         pygame.display.flip()
