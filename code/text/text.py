@@ -34,7 +34,28 @@ class HeaderText(Text):
     """Custom header text"""
     def __init__(self, screen: pygame.Surface) -> None:
         super().__init__(screen)
-        self.font = pygame.font.Font("assets/fonts/Minecraft.ttf", 80)
+        self.angle = 15
+        self.font_size = 80
+        self.font = pygame.font.Font("assets/fonts/Minecraft.ttf", self.font_size)
+        self.header_text_percentage = 1.0
+        self.header_offset_amount = 0.001
+        self.header_min_percentage = 0.9
+        self.header_max_percentage = 1.1
+        self.header_increasing = True
+    
+    def increment_header_font_size(self) -> None:
+        """Set font size"""
+        self.header_text_percentage += self.header_offset_amount if self.header_increasing else -self.header_offset_amount
+        if self.header_text_percentage >= self.header_max_percentage: self.header_increasing = False
+        elif self.header_text_percentage <= self.header_min_percentage: self.header_increasing = True
+
+        self.font = pygame.font.Font("assets/fonts/Minecraft.ttf", round(self.header_text_percentage * self.font_size))
+
+class HeadingText(Text):
+    """Custom heading text"""
+    def __init__(self, screen: pygame.Surface) -> None:
+        super().__init__(screen)
+        self.font = pygame.font.Font("assets/fonts/Minecraft.ttf", 70)
 
 class ButtonText(Text):
     """Custom button text"""
