@@ -52,27 +52,37 @@ class Player(pygame.sprite.Sprite):
         key_results = {K_w: (0, -self.speed), K_s: (0, self.speed), 
                        K_a: (-self.speed, 0), K_d: (self.speed, 0)}
         for key in key_results:
-            if key_pressed[key] and self.boundary_check():
-                self.rect.move_ip(key_results[key])
-                self.rel.x += key_results[key][0]
-                self.rel.y += key_results[key][1]
-                has_moved = True
-
-                # Make sure the player doesn't get stuck in the wall by moving
-                # them back if they are
-                if not self.boundary_check():
-                    self.bg_tile[0] -= key_results[key][0]
-                    self.bg_tile[1] -= key_results[key][1]
-                    self.rect.move_ip(-key_results[key][0], -key_results[key][1])
-                    self.collision = True
-                    has_moved = False
-                if self.check_collision(self.wall):
+            hit_boundary = self.increment_boundary(key_pressed, key, key_results)
+            if hit_boundary:
+                self.bg_tile[0] -= key_results[key][0]
+                self.bg_tile[1] -= key_results[key][1]
+                self.rect.move_ip(-key_results[key][0], -key_results[key][1])
+            if self.check_collision(self.wall):
                     self.rel.x -= key_results[key][0]
                     self.rel.y -= key_results[key][1]
                     self.rect.move_ip(-key_results[key][0], -key_results[key][1])
                     has_moved = False
         return has_moved
     
+    def increment_boundary(self, key_pressed, key, key_results):
+        """Move the player and check to see if they hit a wall, if they
+        did the move back and return True, else return False"""
+        hit_boundary = False
+        if key_pressed[key] and self.boundary_check():
+            self.rect.move_ip(key_results[key])
+            self.rel.x += key_results[key][0]
+            self.rel.y += key_results[key][1]
+
+            # Make sure the player doesn't get stuck in the wall by moving
+            # them back if they are
+            if not self.boundary_check():
+                self.rel.x -= key_results[key][0]
+                self.rel.y -= key_results[key][1]
+                self.rect.move_ip(-key_results[key][0], -key_results[key][1])
+                hit_boundary = True
+        return hit_boundary
+
+
     def check_collision(self, color):
         """Check if entity collides with any other entity"""
         try:
