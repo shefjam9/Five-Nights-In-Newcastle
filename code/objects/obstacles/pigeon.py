@@ -17,8 +17,8 @@ class Pigeon(Obstacle):
         self.filled = False
         self.player.add_ignore_entity_collision(self)
 
-        self.anims = {PigeonState.STATE_WALKING_RIGHT: Animation("assets/pigeon_walking.png", 64, 64, 24, 20),
-                      PigeonState.STATE_WALKING_LEFT: Animation("assets/pigeon_walking_left.png", 64, 64, 24, 20),
+        self.anims = {PigeonState.STATE_WALKING_RIGHT: Animation("assets/pigeon_walking.png", 64, 64, 24, 5),
+                      PigeonState.STATE_WALKING_LEFT: Animation("assets/pigeon_walking_left.png", 64, 64, 24, 5),
                       PigeonState.STATE_PECKING: Animation("assets/pigeon_pecking.png", 96, 64, 4, 40)}
         self.see_player_range = 400
         self.current_state = PigeonState.STATE_PECKING
@@ -35,11 +35,11 @@ class Pigeon(Obstacle):
             # Vector from pigeon to player
             vec = (self.player.rect.centerx-self.rect.centerx, self.player.rect.centery-self.rect.centery)
             vec_normalized = (vec[0]/dist_to_player, vec[1]/dist_to_player)
-
+            mov_x, mov_y = vec_normalized[0]*self.speed, vec_normalized[1]*self.speed
             # Move and check for collision
-            self.move(vec_normalized[0]*self.speed, vec_normalized[1]*self.speed)
+            self.move(mov_x, mov_y)
             if self.check_collision(self.player.wall):
-                self.move(-(vec_normalized[0]*(self.speed*2)), -(vec_normalized[1]*(self.speed*2)))
+                self.move(-(mov_x+1), -(mov_y+1))
         else:
             self.current_state = PigeonState.STATE_PECKING
 
