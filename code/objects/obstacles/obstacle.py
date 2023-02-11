@@ -31,6 +31,21 @@ class Obstacle:
         self.movement_amount.x += x_amount
         self.movement_amount.y += y_amount
 
+    def check_collision(self, color):
+        """Check if obstacle collides with wall"""
+        try:
+            if self.bg_img.get_at((round(self.rect.left - self.bg_tile[0]), round(self.rect.top - self.bg_tile[1]))) == color:
+                return True
+            elif self.bg_img.get_at((round(self.rect.left - self.bg_tile[0]), round(self.rect.bottom - self.bg_tile[1]))) == color:
+                return True
+            elif self.bg_img.get_at((round(self.rect.right - self.bg_tile[0]), round(self.rect.top - self.bg_tile[1]))) == color:
+                return True
+            elif self.bg_img.get_at((round(self.rect.right - self.bg_tile[0]), round(self.rect.bottom - self.bg_tile[1]))) == color:
+                return True
+        except Exception as e:
+            print(e)
+        return False
+
     def fade_in(self, time) -> bool:
         if time - self.placementTime <= self._fade_in_time:
             self._fade_in_radius = min(15 * ((time - self.placementTime)/1e3)*2, 32)

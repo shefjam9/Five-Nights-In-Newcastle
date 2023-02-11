@@ -6,3 +6,5 @@
 [] - server
 [x] - entity rendering
 [x] - entity collisions
+[x] - enemy movement
+[] - enemy collisions
