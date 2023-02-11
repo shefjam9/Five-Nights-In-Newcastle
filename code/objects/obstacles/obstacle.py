@@ -34,13 +34,13 @@ class Obstacle:
     def check_collision(self, color):
         """Check if obstacle collides with wall"""
         try:
-            if self.bg_img.get_at((round(self.rect.left - self.bg_tile[0]), round(self.rect.top - self.bg_tile[1]))) == color:
+            if self.player.bg_img.get_at((round(self.rect.left - self.player.bg_tile[0]), round(self.rect.top - self.player.bg_tile[1]))) == color:
                 return True
-            elif self.bg_img.get_at((round(self.rect.left - self.bg_tile[0]), round(self.rect.bottom - self.bg_tile[1]))) == color:
+            elif self.player.bg_img.get_at((round(self.rect.left - self.player.bg_tile[0]), round(self.rect.bottom - self.player.bg_tile[1]))) == color:
                 return True
-            elif self.bg_img.get_at((round(self.rect.right - self.bg_tile[0]), round(self.rect.top - self.bg_tile[1]))) == color:
+            elif self.player.bg_img.get_at((round(self.rect.right - self.player.bg_tile[0]), round(self.rect.top - self.player.bg_tile[1]))) == color:
                 return True
-            elif self.bg_img.get_at((round(self.rect.right - self.bg_tile[0]), round(self.rect.bottom - self.bg_tile[1]))) == color:
+            elif self.player.bg_img.get_at((round(self.rect.right - self.player.bg_tile[0]), round(self.rect.bottom - self.player.bg_tile[1]))) == color:
                 return True
         except Exception as e:
             print(e)

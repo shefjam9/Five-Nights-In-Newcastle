@@ -27,12 +27,19 @@ class Pigeon(Obstacle):
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
         if dist_to_player < self.see_player_range:
+            # Avoid 0 division error
             self.current_state = PigeonState.STATE_WALKING_LEFT if self.player.rect.centerx < self.rect.centerx else PigeonState.STATE_WALKING_RIGHT
             if dist_to_player == 0:
                 return
+            
+            # Vector from pigeon to player
             vec = (self.player.rect.centerx-self.rect.centerx, self.player.rect.centery-self.rect.centery)
             vec_normalized = (vec[0]/dist_to_player, vec[1]/dist_to_player)
+
+            # Move and check for collision
             self.move(vec_normalized[0]*self.speed, vec_normalized[1]*self.speed)
+            if self.check_collision(self.player.wall):
+                self.move(-(vec_normalized[0]*(self.speed*2)), -(vec_normalized[1]*(self.speed*2)))
         else:
             self.current_state = PigeonState.STATE_PECKING
 
