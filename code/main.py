@@ -1,41 +1,23 @@
 import pygame
 import time
-import math
 
 from objects.player import Player
-from pygame.locals import K_ESCAPE, KEYDOWN, QUIT
+from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, K_p, K_o
 from settings import *
 from logger import log
+from game_state import GameState
 
 # Initialize pygame
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Five Nights at Newcastle")
+current_game_state = GameState.GAME
+is_player_loaded = False
 
-# Creating background image
+# Creating background image and tiles
 bg_img = pygame.image.load("assets/newcastle.png").convert()
-
-"""
-CHeck if a tile is visible on the screen, if it is not delete it
-If it's not visible on the screen, then that means that a new tile needs to be made in the opposite direction to which it's not visible on the screen
-If a tile is not fully visible on the screen (all 4 points), then check which points are off the screen, then create a tile in the opposite direction
-
-E.g. if there are 3x3 tiles on the screen:
-______
-|x x x|
-|x . x|
-|x x x|
-______
-
-Then if the player moves left a bit, the screen would look like this:
-  ______
-x|x x x|
-x|. x x|
-x|x x x|
-  ______
-
-So the left tiles which were made are only half visible, as are the right tiles, but the other half compared to the left.
-"""
+tile = [0, 0]
+player: Player
 
 _entities = []
 
@@ -57,53 +39,63 @@ def get_current_time() -> float:
     """
     return time.perf_counter() * 1e3
 
-def run_game():
-    """Main game loop"""
+def main_loop():
+    """Main game loop that switches between game states"""
+    global current_game_state
     running = True
-    player = Player()
-    add_entity(player)
-
-    # Generate background tiles
-    tile = [0, 0]
-
-    # Main loop
     while running:
         # Event loop
         for event in pygame.event.get():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     running = False
+                elif event.key == K_p:
+                    current_game_state = GameState.HOME
+                elif event.key == K_o:
+                    current_game_state = GameState.GAME
             elif event.type == QUIT:
                 running = False
 
-        # Update pressed keys
-        pressed_keys = pygame.key.get_pressed()
-        # update entities
-        for ent in _entities:
-          ent.update(pressed_keys, get_current_time())
+        # Check game status
+        if current_game_state == GameState.HOME:
+            pass
+        elif current_game_state == GameState.GAME:
+            run_game()
 
-        # Render background
-        screen.fill((255, 0, 0))
-        tile_x = tile[0]
-        tile_y = tile[1]
+def run_game():
+    """Main game loop"""
+    global is_player_loaded, tile, player
+    # Generate background tiles and player
+    if not is_player_loaded:
+        player = Player()
+        add_entity(player)
+        is_player_loaded = True
 
-        if tile_x > -bg_img.get_width() - player.rel.x:
-            screen.blit(bg_img, (tile_x, tile_y))
-        elif tile_x > SCREEN_WIDTH + bg_img.get_width():
-            continue
+    # Update pressed keys
+    pressed_keys = pygame.key.get_pressed()
+    # update entities
+    for ent in _entities:
+        ent.update(pressed_keys, get_current_time())
 
-        tile_x = -player.rel.x
-        tile_y = -player.rel.y
-        tile = [tile_x, tile_y]
-        
+    # Render background
+    screen.fill((255, 0, 0))
+    tile_x = tile[0]
+    tile_y = tile[1]
 
-        # Render entities
-        for ent in _entities:
-            screen.blit(ent.surf, ent.rect)
-        pygame.display.flip()
+    if tile_x > -bg_img.get_width() - player.rel.x:
+        screen.blit(bg_img, (tile_x, tile_y))
+
+    tile_x = -player.rel.x
+    tile_y = -player.rel.y
+    tile = [tile_x, tile_y]
+    
+    # Render entities
+    for ent in _entities:
+        screen.blit(ent.surf, ent.rect)
+    pygame.display.flip()
 
 
 if __name__ == "__main__":
     log("Loading game...", type="info")
     log(f"Screen size: {SCREEN_WIDTH}x{SCREEN_HEIGHT}")
-    run_game()
+    main_loop()

@@ -1,0 +1,5 @@
+[x] - background tiles
+[x] - player movement
+[] - environment client
+[] - tile map
+[] - start screen
