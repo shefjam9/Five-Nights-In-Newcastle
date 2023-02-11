@@ -1,5 +1,4 @@
 import pygame
-import time
 
 from misc.settings import *
 from misc.logger import log

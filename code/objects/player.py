@@ -1,7 +1,7 @@
 import pygame
 from misc.settings import *
 from pygame.locals import K_w, K_s, K_a, K_d
-from misc.logger import log
+from objects.pos import Pos
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -40,13 +40,3 @@ class Player(pygame.sprite.Sprite):
                 # them back if they are
                 if not self.boundary_check():
                     self.rect.move_ip(-key_results[key][0], -key_results[key][1])
-
-
-class Pos:
-    """Position class"""
-    x: int
-    y: int
-
-    def __init__(self, x, y) -> None:
-        self.x = x
-        self.y = y
