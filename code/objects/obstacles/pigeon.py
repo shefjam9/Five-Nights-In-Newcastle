@@ -26,7 +26,6 @@ class Pigeon(Obstacle):
 
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
-        print(f"Distance: {dist_to_player}")
         if dist_to_player < self.see_player_range:
             self.current_state = PigeonState.STATE_WALKING_LEFT if self.player.rect.centerx < self.rect.centerx else PigeonState.STATE_WALKING_RIGHT
             if dist_to_player == 0:
