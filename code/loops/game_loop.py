@@ -70,6 +70,7 @@ class GameLoop:
         # Render entities
         for ent in self.entities:
             if ent != self.player:
+                #ent.adjust_position()
                 self.screen.blit(ent.surf, ent.rect)
         self.screen.blit(self.player.surf, self.player.rect)
         self.player.set_entities(self.entities)
