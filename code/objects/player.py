@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.wall = (75, 221, 161, 255)
         self.collision = False
         self.health = 100
+        self.speed_modifier = 1.0
 
         # Move player
         self.start_pos = Pos(SCREEN_CENTER[0], SCREEN_CENTER[1])
@@ -69,8 +70,8 @@ class Player(pygame.sprite.Sprite):
         has_moved = False
         if self.boundary_check():
             self.collision = False
-        key_results = {K_w: (0, -self.speed), K_s: (0, self.speed), 
-                       K_a: (-self.speed, 0), K_d: (self.speed, 0)}
+        key_results = {K_w: (0, -self.speed*self.speed_modifier), K_s: (0, self.speed*self.speed_modifier), 
+                       K_a: (-self.speed*self.speed_modifier, 0), K_d: (self.speed*self.speed_modifier, 0)}
         for key in key_results:
             hit_boundary = self.increment_boundary(key_pressed, key, key_results)
             if hit_boundary:
