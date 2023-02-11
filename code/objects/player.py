@@ -18,6 +18,9 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 100
         self.rect.y = 100
 
+        # Relative positions
+        self.rel = Pos(0, 0)
+
     def boundary_check(self):
         """Check if player is within screen bounds"""
         return (self.rect.left > 0 and self.rect.right < SCREEN_WIDTH 
@@ -30,8 +33,20 @@ class Player(pygame.sprite.Sprite):
         for key in key_results:
             if key_pressed[key] and self.boundary_check():
                 self.rect.move_ip(key_results[key])
+                self.rel.x += key_results[key][0]
+                self.rel.y += key_results[key][1]
 
                 # Make sure the player doesn't get stuck in the wall by moving
                 # them back if they are
                 if not self.boundary_check():
                     self.rect.move_ip(-key_results[key][0], -key_results[key][1])
+
+
+class Pos:
+    """Position class"""
+    x: int
+    y: int
+
+    def __init__(self, x, y) -> None:
+        self.x = x
+        self.y = y
