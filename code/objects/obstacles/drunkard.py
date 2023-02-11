@@ -27,6 +27,7 @@ class Hobo(Obstacle):
                       HoboState.STATE_SLEEP_LEFT : Animation("assets/Hobo_Sitting_Left.png", w, h, 5, 100)
                       }
         self.tick_counter = 0
+        self.speed = 0.1
         self.current_state = random.choice([HoboState.STATE_SLEEP_LEFT, HoboState.STATE_SLEEP_RIGHT])
 
     def update(self, key_pressed, time):
@@ -35,20 +36,19 @@ class Hobo(Obstacle):
            self.adjust_position()
            return   
         
-           
         # Draw frame
         self.surf.fill(0)
         self.anims[self.current_state].update(time)
         self.anims[self.current_state].render_frame(self.surf, 0, 0)
         self.tick_counter += 1
         
-        # if self.tick_counter >= random.randint(5000, 15000):
-        #     self.tick_counter = 0
-        #     self.current_state = random.choice([HoboState.STATE_WALK_CENTER, HoboState.STATE_WALK_LEFT, HoboState.STATE_WALK_RIGHT])
-
-        # Move after adjusting position
-        self.adjust_position()
-        self.move(1, 0)
         if self.tick_counter >= random.randint(5000, 15000):
             self.tick_counter = 0
             self.current_state = random.choice([HoboState.STATE_IDLE, HoboState.STATE_WALK_LEFT, HoboState.STATE_WALK_RIGHT])
+
+        # Move after adjusting position
+        self.adjust_position()
+        if self.current_state == HoboState.STATE_WALK_LEFT:
+            self.move(-self.speed, 0)
+        elif self.current_state == HoboState.STATE_WALK_RIGHT:
+            self.move(self.speed, 0)
