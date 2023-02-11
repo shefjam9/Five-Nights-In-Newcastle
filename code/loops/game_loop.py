@@ -5,7 +5,6 @@ from misc.colours import Colours
 from text.text import HeaderText
 from objects.pos import Pos
 from objects.player import Player
-from objects.obstacles.glass import Glass
 
 class GameLoop:
     """Game loop class"""
@@ -22,7 +21,6 @@ class GameLoop:
 
         # Add entities
         self.add_entity(self.player)
-        self.add_entity(Glass(time.perf_counter()*1e3, 100, 100, self.player))
 
     def add_entity(self, entity: pygame.sprite.Sprite):
         """Add an entity to the game (needs update method)"""
