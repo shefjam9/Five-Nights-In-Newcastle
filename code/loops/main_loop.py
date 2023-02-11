@@ -45,7 +45,8 @@ class MainLoop:
                 elif event.type == pygame.MOUSEBUTTONUP:
                     # TODO remove as just test
                     pos = pygame.mouse.get_pos()
-                    self.game_loop.add_entity(Glass(GameLoop.get_current_time(), pos[0]-32, pos[1]-32, 64, 64, self.game_loop.player))
+                    self.game_loop.add_entity(Glass(GameLoop.get_current_time(), pos[0]-32-self.player.obj_offset.x,
+                                                     pos[1]-32-self.player.obj_offset.y, 64, 64, self.game_loop.player))
 
             # Check game status
             if self.current_game_state == GameState.HOME:
