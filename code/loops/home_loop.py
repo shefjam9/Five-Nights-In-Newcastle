@@ -20,7 +20,7 @@ class HomeLoop:
         self.generate_single_button(self.play_button_callback, 
                                     Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.4)), 
                                     "PLAY")
-        self.generate_single_button(self.settings_button_callback,, 
+        self.generate_single_button(self.settings_button_callback,
                                     Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.5)), 
                                     "SETTINGS")
 
