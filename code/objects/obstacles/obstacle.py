@@ -23,6 +23,6 @@ class Obstacle:
 
     def fade_in(self, time) -> bool:
         if time - self.placementTime <= self._fade_in_time:
-            self._fade_in_radius = min(5 * ((time - self.placementTime)/1e3)*2, 32)
+            self._fade_in_radius = min(15 * ((time - self.placementTime)/1e3)*2, 32)
             return True
         return False

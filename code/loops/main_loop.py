@@ -5,7 +5,8 @@ from misc.game_state import GameState
 from loops.game_loop import GameLoop
 from loops.home_loop import HomeLoop
 from objects.player import Player
-from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, K_LSHIFT, MOUSEBUTTONDOWN, KEYUP
+from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, K_LSHIFT, MOUSEBUTTONDOWN, KEYUP, MOUSEBUTTONUP
+from objects.obstacles.glass import Glass
 
 class MainLoop:
     """Main game loop"""
@@ -41,6 +42,10 @@ class MainLoop:
                 elif event.type == MOUSEBUTTONDOWN:
                     if self.current_game_state == GameState.HOME:
                         self.home_loop.check_pressed(event)
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    # TODO remove as just test
+                    pos = pygame.mouse.get_pos()
+                    self.game_loop.add_entity(Glass(GameLoop.get_current_time(), pos[0]-32, pos[1]-32, self.game_loop.player))
 
             # Check game status
             if self.current_game_state == GameState.HOME:
