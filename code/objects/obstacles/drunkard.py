@@ -27,18 +27,26 @@ class Hobo(Obstacle):
                       HoboState.STATE_IDLE_LEFT : Animation("assets/Hobo_Sitting_Left.png", 64, 64, 3, 100)
                       }
         self.tick_counter = 0
-        self.current_state = random.choice([HoboState.STATE_IDLE_LEFT, HoboState.STATE_IDLE_RIGHT])
+        # self.current_state = random.choice([HoboState.STATE_IDLE_LEFT, HoboState.STATE_IDLE_RIGHT])
+        self.current_state = HoboState.STATE_WALK_LEFT
 
     def update(self, key_pressed, time):
         if super().fade_in(time):
            pygame.draw.circle(self.surf, (255, 0, 0, 50), (self.width/2, self.height/2), self._fade_in_radius)  
            self.adjust_position()
-           return      
+           return   
+        
+           
+        # Draw frame
         self.surf.fill(0)
         self.anims[self.current_state].update(time)
         self.anims[self.current_state].render_frame(self.surf, 0, 0)
         self.tick_counter += 1
-        if self.tick_counter >= random.randint(5000, 15000):
-            self.tick_counter = 0
-            self.current_state = random.choice([HoboState.STATE_WALK_CENTER, HoboState.STATE_WALK_LEFT, HoboState.STATE_WALK_RIGHT])
+        
+        # if self.tick_counter >= random.randint(5000, 15000):
+        #     self.tick_counter = 0
+        #     self.current_state = random.choice([HoboState.STATE_WALK_CENTER, HoboState.STATE_WALK_LEFT, HoboState.STATE_WALK_RIGHT])
+
+        # Move after adjusting position
         self.adjust_position()
+        self.move(1, 0)

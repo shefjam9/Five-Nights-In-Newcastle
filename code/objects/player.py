@@ -1,5 +1,6 @@
 import pygame
 from misc.settings import *
+from misc.logger import log
 from pygame.locals import K_w, K_s, K_a, K_d
 from objects.pos import Pos
 
@@ -60,7 +61,7 @@ class Player(pygame.sprite.Sprite):
         if not ent.has_damaged:
             self.health -= ent.damage_amount
             ent.has_damaged = True
-            print(self.health)
+            log(f"Health is now {self.health} (-{ent.damage_amount})")
 
     def add_ignore_entity_collision(self, entity):
         """Add entity to ignore collision"""

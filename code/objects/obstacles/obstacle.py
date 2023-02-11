@@ -21,8 +21,14 @@ class Obstacle:
         raise NotImplementedError("Obstacle needs update method")
     
     def adjust_position(self):
-        self.rect.x = self.player.obj_offset.x + self.start_x
-        self.rect.y = self.player.obj_offset.y + self.start_y
+        rel_x = self.player.obj_offset.x + self.start_x
+        rel_y = self.player.obj_offset.y + self.start_y
+        self.rect.x = rel_x
+        self.rect.y = rel_y
+
+    def move(self, x_amount, y_amount):
+        self.rect.x += x_amount
+        self.rect.y += y_amount
 
     def fade_in(self, time) -> bool:
         if time - self.placementTime <= self._fade_in_time:
