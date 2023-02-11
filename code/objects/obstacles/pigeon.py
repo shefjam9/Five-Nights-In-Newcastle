@@ -27,7 +27,12 @@ class Pigeon(Obstacle):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
         print(f"Distance: {dist_to_player}")
         if dist_to_player < self.see_player_range:
-            self.current_state = PigeonState.STATE_WALKING_LEFT
+            self.current_state = PigeonState.STATE_WALKING_LEFT if self.player.rect.centerx < self.rect.centerx else PigeonState.STATE_WALKING_RIGHT
+            if dist_to_player == 0:
+                return
+            vec = (self.player.rect.centerx-self.rect.centerx, self.player.rect.centery-self.rect.centery)
+            vec_normalized = (vec[0]/dist_to_player, vec[1]/dist_to_player)
+            self.move(vec_normalized[0]*0.5, vec_normalized[1]*0.5)
         else:
             self.current_state = PigeonState.STATE_PECKING
 
