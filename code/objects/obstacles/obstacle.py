@@ -4,14 +4,15 @@ from objects.pos import Pos
 
 class Obstacle:
 
-    def __init__(self, time, x, y, player):
+    def __init__(self, time, x, y, w, h, player):
         self.placementTime = time
         self.start_x, self.start_y = x, y
+        self.width, self.height = w, h
         self._fade_in_time = 1e3
         self._fade_in_radius = 5
         self.player = player
-        self.rect = pygame.Rect(x, y, 64, 64)
-        self.surf = pygame.Surface((64, 64), pygame.SRCALPHA)
+        self.rect = pygame.Rect(x, y, w, h)
+        self.surf = pygame.Surface((w, h), pygame.SRCALPHA)
         self.rel = Pos(x, y)
 
     def update(keys_pressed, time):
