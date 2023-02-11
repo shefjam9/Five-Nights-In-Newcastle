@@ -34,6 +34,7 @@ class GameLoop:
         """Main game loop tick"""
         # Update pressed keys
         pressed_keys = pygame.key.get_pressed()
+        
         # update entities
         for ent in self.entities:
             ent.update(pressed_keys, self.get_current_time())
