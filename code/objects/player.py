@@ -28,6 +28,10 @@ class Player(pygame.sprite.Sprite):
         self.rel = self.start_pos
         self.obj_offset = Pos(0, 0)
 
+        # Entities for collision
+        self.entities = []
+        self.ignore_entity_collision = []
+
     def boundary_check(self):
         """Check if player is within screen bounds"""
         return (self.rect.left > 300 and self.rect.right < SCREEN_WIDTH  - 300
@@ -37,13 +41,20 @@ class Player(pygame.sprite.Sprite):
         """Set bg tile position"""
         self.bg_tile = bg_tile
 
+    def set_entities(self, entities):
+        """Set entities for collision"""
+        self.entities = entities
+
     def set_sprint(self, is_sprinting):
         """Set sprint speed"""
         if is_sprinting:
             self.speed = self.sprint_speed
         else:
             self.speed = self.default_speed
-        
+
+    def add_ignore_entity_collision(self, entity):
+        """Add entity to ignore collision"""
+        self.ignore_entity_collision.append(entity)
 
     def update(self, key_pressed):
         """Update the player position based on key presses"""
@@ -61,10 +72,17 @@ class Player(pygame.sprite.Sprite):
                 self.obj_offset.y -= key_results[key][1]
                 self.rect.move_ip(-key_results[key][0], -key_results[key][1])
             if self.check_collision(self.wall):
-                    self.rel.x -= key_results[key][0]
-                    self.rel.y -= key_results[key][1]
-                    self.rect.move_ip(-key_results[key][0], -key_results[key][1])
-                    has_moved = False
+                self.rel.x -= key_results[key][0]
+                self.rel.y -= key_results[key][1]
+                self.rect.move_ip(-key_results[key][0], -key_results[key][1])
+                has_moved = False
+            for ent in self.entities:
+                if ent != self:
+                    if self.check_entity_collision(ent):
+                        self.rel.x -= key_results[key][0]
+                        self.rel.y -= key_results[key][1]
+                        self.rect.move_ip(-key_results[key][0], -key_results[key][1])
+                        has_moved = False
         return has_moved
     
     def increment_boundary(self, key_pressed, key, key_results):
@@ -99,4 +117,10 @@ class Player(pygame.sprite.Sprite):
                 return True
         except Exception as e:
             print(e)
+        return False
+    
+    def check_entity_collision(self, ent):
+        """Check if player collides with any other entity"""
+        if ent not in self.ignore_entity_collision:
+            return pygame.Rect.colliderect(self.rect, ent)
         return False
