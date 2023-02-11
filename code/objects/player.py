@@ -16,8 +16,8 @@ class Player(pygame.sprite.Sprite):
 
         # Speeds and health
         self.health = 100
-        self.default_speed = 1
-        self.sprint_speed = 2
+        self.default_speed = 2
+        self.sprint_speed = 4
         self.speed = self.default_speed
 
         # Collisions

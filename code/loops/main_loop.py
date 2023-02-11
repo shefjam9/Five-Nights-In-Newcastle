@@ -63,5 +63,5 @@ class MainLoop:
                 running = False
 
             # Tick clock
-            self.clock.tick()
+            self.clock.tick(120)
             # log(self.clock.get_fps(), "info")

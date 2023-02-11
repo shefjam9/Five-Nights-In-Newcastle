@@ -38,7 +38,7 @@ class HeaderText(Text):
         self.font_size = 80
         self.font = pygame.font.Font("assets/fonts/Minecraft.ttf", self.font_size)
         self.header_text_percentage = 1.0
-        self.header_offset_amount = 0.001
+        self.header_offset_amount = 0.005
         self.header_min_percentage = 0.9
         self.header_max_percentage = 1.1
         self.header_increasing = True
