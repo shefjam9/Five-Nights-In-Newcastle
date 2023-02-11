@@ -53,10 +53,12 @@ class Player(pygame.sprite.Sprite):
         else:
             self.speed = self.default_speed
 
-    def damage(self, amount):
+    def damage(self, ent):
         """Damage player"""
-        self.health -= amount
-        print(self.health)
+        if not ent.has_damaged:
+            self.health -= ent.damage_amount
+            ent.has_damaged = True
+            print(self.health)
 
     def add_ignore_entity_collision(self, entity):
         """Add entity to ignore collision"""
@@ -90,7 +92,7 @@ class Player(pygame.sprite.Sprite):
                             self.rel.y -= key_results[key][1]
                             self.rect.move_ip(-key_results[key][0], -key_results[key][1])
                             has_moved = False
-                        self.damage(ent.damage_amount)
+                        self.damage(ent)
         return has_moved
     
     def increment_boundary(self, key_pressed, key, key_results):
