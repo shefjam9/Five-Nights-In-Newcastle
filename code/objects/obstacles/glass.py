@@ -5,16 +5,16 @@ from misc.logger import log
 
 class Glass(Obstacle):
     """ITS A FUCKING GLASS!!"""
-    def __init__(self, time: float, x: int, y: int, player):
-        super().__init__(time, x, y, player)
+    def __init__(self, time: float, x: int, y: int,  w: int, h: int, player):
+        super().__init__(time, x, y, w, h, player)
         self.image = pygame.image.load("assets/Bottle.png").convert_alpha()
-        self.texture = pygame.transform.scale(self.image, (64, 64))
+        self.texture = pygame.transform.scale(self.image, (w, h))
         self.filled = False
         self.player.add_ignore_entity_collision(self)
 
     def update(self, key_pressed, time):
         if super().fade_in(time):
-           pygame.draw.circle(self.surf, (255, 0, 0, 50), (32, 32), self._fade_in_radius)
+           pygame.draw.circle(self.surf, (255, 0, 0, 50), (self.width/2, self.height/2), self._fade_in_radius)
            return
         
         if not self.filled:
