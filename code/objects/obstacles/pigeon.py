@@ -39,7 +39,7 @@ class Pigeon(Obstacle):
             # Move and check for collision
             self.move(mov_x, mov_y)
             if self.check_collision(self.player.wall):
-                self.move(-(mov_x+1), -(mov_y+1))
+                self.move(-(mov_x-5), -(mov_y-5))
         else:
             self.current_state = PigeonState.STATE_PECKING
 
