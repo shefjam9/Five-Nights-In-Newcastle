@@ -22,6 +22,7 @@ class Pigeon(Obstacle):
                       PigeonState.STATE_PECKING: Animation("assets/pigeon_pecking.png", 96, 64, 4, 40)}
         self.see_player_range = 400
         self.current_state = PigeonState.STATE_PECKING
+        self.speed = 0.4
 
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
@@ -32,7 +33,7 @@ class Pigeon(Obstacle):
                 return
             vec = (self.player.rect.centerx-self.rect.centerx, self.player.rect.centery-self.rect.centery)
             vec_normalized = (vec[0]/dist_to_player, vec[1]/dist_to_player)
-            self.move(vec_normalized[0]*0.5, vec_normalized[1]*0.5)
+            self.move(vec_normalized[0]*self.speed, vec_normalized[1]*self.speed)
         else:
             self.current_state = PigeonState.STATE_PECKING
 
