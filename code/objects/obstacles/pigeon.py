@@ -3,6 +3,12 @@ from objects.obstacles.obstacle import Obstacle
 from pygame.locals import K_w, K_s, K_a, K_d
 from misc.logger import log
 from objects.animation import Animation
+from enum import IntFlag
+
+class PigeonState(IntFlag):
+    STATE_PECKING = 1
+    STATE_WALKING_LEFT = 2
+    STATE_WALKING_RIGHT = 3
 
 class Pigeon(Obstacle):
     """ITS A FUCKING pigeon."""
@@ -11,8 +17,9 @@ class Pigeon(Obstacle):
         self.filled = False
         self.player.add_ignore_entity_collision(self)
 
-        self.walk_animation = Animation("assets/pigeon_walking.png", 64, 64, 24, 20)
-        self.peck_animation = Animation("assets/pigeon_pecking.png", 96, 64, 4, 40)
+        self.anims = {PigeonState.STATE_WALKING_RIGHT: Animation("assets/pigeon_walking.png", 64, 64, 24, 20),
+                      PigeonState.STATE_WALKING_LEFT: Animation("assets/pigeon_walking_left.png", 64, 64, 24, 20),
+                      PigeonState.STATE_PECKING: Animation("assets/pigeon_pecking.png", 96, 64, 4, 40)}
 
         self.current_animation = self.peck_animation
 
