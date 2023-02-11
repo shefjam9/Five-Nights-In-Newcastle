@@ -14,6 +14,7 @@ class Obstacle:
         self.rect = pygame.Rect(x, y, w, h)
         self.surf = pygame.Surface((w, h), pygame.SRCALPHA)
         self.rel = Pos(x, y)
+        self.damage_amount = 0
 
     def update(keys_pressed, time):
         raise NotImplementedError("Obstacle needs update method")

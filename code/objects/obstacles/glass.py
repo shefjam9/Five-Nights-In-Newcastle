@@ -11,6 +11,7 @@ class Glass(Obstacle):
         self.texture = pygame.transform.scale(self.image, (w, h))
         self.filled = False
         self.player.add_ignore_entity_collision(self)
+        self.damage_amount = 10
 
     def update(self, key_pressed, time):
         if super().fade_in(time):

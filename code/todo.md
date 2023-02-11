@@ -5,4 +5,4 @@
 [x] - start screen
 [] - server
 [x] - entity rendering
-[] - entity collisions
+[x] - entity collisions

@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.bg_img = bg_img
         self.wall = (75, 221, 161, 255)
         self.collision = False
+        self.health = 100
 
         # Move player
         self.start_pos = Pos(SCREEN_CENTER[0], SCREEN_CENTER[1])
@@ -52,6 +53,11 @@ class Player(pygame.sprite.Sprite):
         else:
             self.speed = self.default_speed
 
+    def damage(self, amount):
+        """Damage player"""
+        self.health -= amount
+        print(self.health)
+
     def add_ignore_entity_collision(self, entity):
         """Add entity to ignore collision"""
         self.ignore_entity_collision.append(entity)
@@ -79,10 +85,12 @@ class Player(pygame.sprite.Sprite):
             for ent in self.entities:
                 if ent != self:
                     if self.check_entity_collision(ent):
-                        self.rel.x -= key_results[key][0]
-                        self.rel.y -= key_results[key][1]
-                        self.rect.move_ip(-key_results[key][0], -key_results[key][1])
-                        has_moved = False
+                        if ent not in self.ignore_entity_collision:
+                            self.rel.x -= key_results[key][0]
+                            self.rel.y -= key_results[key][1]
+                            self.rect.move_ip(-key_results[key][0], -key_results[key][1])
+                            has_moved = False
+                        self.damage(ent.damage_amount)
         return has_moved
     
     def increment_boundary(self, key_pressed, key, key_results):
@@ -121,6 +129,4 @@ class Player(pygame.sprite.Sprite):
     
     def check_entity_collision(self, ent):
         """Check if player collides with any other entity"""
-        if ent not in self.ignore_entity_collision:
-            return pygame.Rect.colliderect(self.rect, ent)
-        return False
+        return pygame.Rect.colliderect(self.rect, ent)
