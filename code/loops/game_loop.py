@@ -45,11 +45,12 @@ class GameLoop:
         # Update pressed keys
         pressed_keys = pygame.key.get_pressed()
         
-        # update entities
+        # update player
         player_collision = self.player.check_collision(self.player.wall)
         has_moved = self.player.update(pressed_keys)
         self.camera.center = self.player.rect.center
 
+        # update other entities
         for ent in self.entities:
             if ent != self.player:
                 ent.update(pressed_keys, self.get_current_time())
@@ -62,10 +63,6 @@ class GameLoop:
         if tile_x > -self.bg_img.get_width() - self.player.rel.x:
             self.screen.blit(self.bg_img, (tile_x, tile_y))
 
-        # tile_x = self.player.rect.x
-        # tile_y = self.player.rect.y
-        # self.tile = [tile_x, tile_y]
-
         title_position = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.2))
         title_position_2 = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.3))
         self.header_text.render(f"Collision: {player_collision}, ({self.player.rect.left},{self.player.rect.top})", self.header_text.primary, title_position, True)
@@ -73,5 +70,7 @@ class GameLoop:
 
         # Render entities
         for ent in self.entities:
-            self.screen.blit(ent.surf, ent.rect)
+            if ent != self.player:
+                self.screen.blit(ent.surf, ent.rect)
+        self.screen.blit(self.player.surf, self.player.rect)
         pygame.display.flip()

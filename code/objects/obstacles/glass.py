@@ -16,18 +16,10 @@ class Glass(Obstacle):
            self.surf.fill(0)
            pygame.draw.circle(self.surf, (255, 0, 0, 50), (32, 32), self._fade_in_radius)
            return
+        
         if not self.filled:
           self.surf.blit(self.texture, (0, 0))
           self.filled = True
-        
-        key_results = {K_w: (0, -self.player.speed), K_s: (0, self.player.speed), 
-                        K_a: (-self.player.speed, 0), K_d: (self.player.speed, 0)}
-        for key in key_results:
-            # print(self.player.rel.to_tuple())
-            # hit_boundary = self.player.increment_boundary(key_pressed, key, key_results)
-            # print(self.player.rel.to_tuple(), hit_boundary)
-            # self.rect.x = self.player.bg_tile[0] + self.player.start_pos.x
-            # self.rect.y = self.player.bg_tile[1] + self.player.start_pos.y
-            pass
-
-        # self.surf.blit(self.texture, (self.rect.x, self.rect.y))
+        else:
+            self.rect.x = self.player.obj_offset.x + self.start_x
+            self.rect.y = self.player.obj_offset.y + self.start_y

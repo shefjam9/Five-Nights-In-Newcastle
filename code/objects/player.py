@@ -26,6 +26,7 @@ class Player(pygame.sprite.Sprite):
 
         # Relative positions
         self.rel = self.start_pos
+        self.obj_offset = Pos(0, 0)
 
     def boundary_check(self):
         """Check if player is within screen bounds"""
@@ -56,6 +57,8 @@ class Player(pygame.sprite.Sprite):
             if hit_boundary:
                 self.bg_tile[0] -= key_results[key][0]
                 self.bg_tile[1] -= key_results[key][1]
+                self.obj_offset.x -= key_results[key][0]
+                self.obj_offset.y -= key_results[key][1]
                 self.rect.move_ip(-key_results[key][0], -key_results[key][1])
             if self.check_collision(self.wall):
                     self.rel.x -= key_results[key][0]

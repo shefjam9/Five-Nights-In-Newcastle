@@ -1,5 +1,6 @@
 import pygame
 from misc.logger import log
+from objects.pos import Pos
 
 class Obstacle:
 
@@ -11,6 +12,7 @@ class Obstacle:
         self.player = player
         self.rect = pygame.Rect(x, y, 64, 64)
         self.surf = pygame.Surface((64, 64), pygame.SRCALPHA)
+        self.rel = Pos(x, y)
 
     def update(keys_pressed, time):
         raise NotImplementedError("Obstacle needs update method")
