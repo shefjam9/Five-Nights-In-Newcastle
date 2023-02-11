@@ -9,9 +9,9 @@ class HoboState(IntFlag):
     STATE_NONE = 1,
     STATE_WALK_LEFT = 2,
     STATE_WALK_RIGHT = 3,
-    STATE_WALK_CENTER = 4
-    STATE_IDLE_LEFT = 5
-    STATE_IDLE_RIGHT = 6
+    STATE_IDLE = 4
+    STATE_SLEEP_LEFT = 5
+    STATE_SLEEP_RIGHT = 6
 
 class Hobo(Obstacle):
     """ITS A FUCKING Homeless man :(!!"""
@@ -20,15 +20,19 @@ class Hobo(Obstacle):
         self.filled = False
         self.player.add_ignore_entity_collision(self)
         self.damage_amount = 50
-        self.anims = {HoboState.STATE_WALK_LEFT: Animation("assets/Hobo_Walking_Left.png", 64, 64, 7, 60, 100),
-                      HoboState.STATE_WALK_RIGHT: Animation("assets/Hobo_Walking_Right.png", 64, 64, 7, 60, 100),
-                      HoboState.STATE_WALK_CENTER: Animation("assets/Hobo_Blinking_Center.png", 64, 64, 3, 50),
-                      HoboState.STATE_IDLE_RIGHT : Animation("assets/Hobo_Sitting_Right.png", 64, 64, 3, 100),
-                      HoboState.STATE_IDLE_LEFT : Animation("assets/Hobo_Sitting_Left.png", 64, 64, 3, 100)
+        self.anims = {HoboState.STATE_WALK_LEFT: Animation("assets/Hobo_Walking_Left.png", w, h, 7, 60, 100),
+                      HoboState.STATE_WALK_RIGHT: Animation("assets/Hobo_Walking_Right.png", w, h, 7, 60, 100),
+                      HoboState.STATE_IDLE: Animation("assets/Hobo_Blinking_Center.png", w, h, 3, 150),
+                      HoboState.STATE_SLEEP_RIGHT : Animation("assets/Hobo_Sitting_Right.png", w, h, 5, 100),
+                      HoboState.STATE_SLEEP_LEFT : Animation("assets/Hobo_Sitting_Left.png", w, h, 5, 100)
                       }
         self.tick_counter = 0
+<<<<<<< HEAD
         # self.current_state = random.choice([HoboState.STATE_IDLE_LEFT, HoboState.STATE_IDLE_RIGHT])
         self.current_state = HoboState.STATE_WALK_LEFT
+=======
+        self.current_state = random.choice([HoboState.STATE_SLEEP_LEFT, HoboState.STATE_SLEEP_RIGHT])
+>>>>>>> 5647fe4e039462fca54c009733922974ac7060e5
 
     def update(self, key_pressed, time):
         if super().fade_in(time):
@@ -42,6 +46,7 @@ class Hobo(Obstacle):
         self.anims[self.current_state].update(time)
         self.anims[self.current_state].render_frame(self.surf, 0, 0)
         self.tick_counter += 1
+<<<<<<< HEAD
         
         # if self.tick_counter >= random.randint(5000, 15000):
         #     self.tick_counter = 0
@@ -50,3 +55,9 @@ class Hobo(Obstacle):
         # Move after adjusting position
         self.adjust_position()
         self.move(1, 0)
+=======
+        if self.tick_counter >= random.randint(5000, 15000):
+            self.tick_counter = 0
+            self.current_state = random.choice([HoboState.STATE_IDLE_CENTER, HoboState.STATE_WALK_LEFT, HoboState.STATE_WALK_RIGHT])
+        self.adjust_position()
+>>>>>>> 5647fe4e039462fca54c009733922974ac7060e5

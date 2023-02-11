@@ -17,6 +17,9 @@ class Animation:
         self.current_frame = 0
         self.current_updates = 0
         self.num_frames = num_frames
+        # scaling animation
+        if h != self.tex.get_height():
+            self.tex = pygame.transform.scale(self.tex, (w*num_frames, h))
         self.width, self.height = w, h
         if not upper_bound:
           self.updates_per_frame = upf
