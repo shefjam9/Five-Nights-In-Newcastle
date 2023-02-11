@@ -1,5 +1,5 @@
 from enum import Enum
-from settings import *
+from misc.settings import *
 
 class GameState(Enum):
     """Enum for game stat"""

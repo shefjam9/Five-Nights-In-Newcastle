@@ -1,7 +1,7 @@
 import pygame
-from settings import *
+from misc.settings import *
 from pygame.locals import K_w, K_s, K_a, K_d
-from logger import log
+from misc.logger import log
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):

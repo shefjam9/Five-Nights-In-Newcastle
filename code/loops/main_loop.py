@@ -1,6 +1,6 @@
 import pygame
-from settings import *
-from game_state import GameState
+from misc.settings import *
+from misc.game_state import GameState
 from loops.game_loop import GameLoop
 from objects.player import Player
 from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, K_p, K_o
@@ -34,4 +34,4 @@ class MainLoop:
             if self.current_game_state == GameState.HOME:
                 pass
             elif self.current_game_state == GameState.GAME:
-                self.game_loop.start()
+                self.game_loop.tick()

@@ -1,5 +1,4 @@
 import pygame
-from logger import log
 
 SCREEN_WIDTH = 1080
 SCREEN_HEIGHT = 720

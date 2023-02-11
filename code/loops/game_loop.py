@@ -1,6 +1,6 @@
 import pygame
 import time
-from settings import *
+from misc.settings import *
 from objects.player import Player
 
 class GameLoop:
@@ -30,8 +30,8 @@ class GameLoop:
         """Return current time in ms"""
         return time.perf_counter() * 1e3
 
-    def start(self):
-        """Main game loop"""
+    def tick(self):
+        """Main game loop tick"""
         # Update pressed keys
         pressed_keys = pygame.key.get_pressed()
         # update entities

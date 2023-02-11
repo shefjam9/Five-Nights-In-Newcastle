@@ -1,5 +1,5 @@
 import pygame
-from logger import log
+from misc.logger import log
 
 class Obstacle:
 

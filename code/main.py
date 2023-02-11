@@ -1,8 +1,8 @@
 import pygame
 import time
 
-from settings import *
-from logger import log
+from misc.settings import *
+from misc.logger import log
 from loops.main_loop import MainLoop
 
 # Initialize pygame

@@ -1,6 +1,6 @@
 import pygame
 from obstacle import Obstacle
-from logger import log
+from misc.logger import log
 
 class Glass(Obstacle):
 
