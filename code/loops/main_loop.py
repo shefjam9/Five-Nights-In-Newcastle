@@ -43,6 +43,7 @@ class MainLoop:
                     if self.current_game_state == GameState.HOME:
                         self.home_loop.check_pressed(event)
                 elif event.type == pygame.MOUSEBUTTONUP:
+                    # TODO remove as just test
                     pos = pygame.mouse.get_pos()
                     self.game_loop.add_entity(Glass(GameLoop.get_current_time(), pos[0]-32, pos[1]-32, self.game_loop.player))
 
