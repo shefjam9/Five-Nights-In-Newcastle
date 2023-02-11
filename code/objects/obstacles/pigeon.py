@@ -20,13 +20,13 @@ class Pigeon(Obstacle):
         self.anims = {PigeonState.STATE_WALKING_RIGHT: Animation("assets/pigeon_walking.png", 64, 64, 24, 20),
                       PigeonState.STATE_WALKING_LEFT: Animation("assets/pigeon_walking_left.png", 64, 64, 24, 20),
                       PigeonState.STATE_PECKING: Animation("assets/pigeon_pecking.png", 96, 64, 4, 40)}
-
+        self.see_player_range = 400
         self.current_state = PigeonState.STATE_PECKING
 
     def run_ai(self, time):
-        dist_to_player = ((self.rect.x - self.player.rect.x)**2+(self.rect.y - self.player.rect.y)**2)**0.5
+        dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
         print(f"Distance: {dist_to_player}")
-        if dist_to_player < 10:
+        if dist_to_player < self.see_player_range:
             self.current_state = PigeonState.STATE_WALKING_LEFT
         else:
             self.current_state = PigeonState.STATE_PECKING
