@@ -14,13 +14,9 @@ class Glass(Obstacle):
 
     def update(self, key_pressed, time):
         if super().fade_in(time):
-           pygame.draw.circle(self.surf, (255, 0, 0, 50), (self.width/2, self.height/2), self._fade_in_radius)
-           return
-        
-        if not self.filled:
+           pygame.draw.circle(self.surf, (255, 0, 0, 50), (self.width/2, self.height/2), self._fade_in_radius)        
+        elif not self.filled:
           self.surf.fill(0)
           self.surf.blit(self.texture, (0, 0))
           self.filled = True
-
-        # Adjust position and check for player collision
         self.adjust_position()
