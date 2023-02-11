@@ -27,4 +27,4 @@ class Animation:
         self.current_updates+=1
     
     def render_frame(self, surface: pygame.Surface, x: int, y: int) -> None:
-        surface.blit(self.tex, (x, y), (self.current_frame*self.width, 0))
+        surface.blit(self.tex, (x, y), (self.current_frame*self.width, 0, self.width, self.height))

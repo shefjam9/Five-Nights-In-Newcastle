@@ -6,7 +6,7 @@ from loops.game_loop import GameLoop
 from loops.home_loop import HomeLoop
 from objects.player import Player
 from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, K_LSHIFT, MOUSEBUTTONDOWN, KEYUP, MOUSEBUTTONUP
-from objects.obstacles.glass import Glass
+from objects.obstacles.pigeon import Pigeon
 
 class MainLoop:
     """Main game loop"""
@@ -45,11 +45,12 @@ class MainLoop:
                 elif event.type == pygame.MOUSEBUTTONUP:
                     # TODO remove as just test
                     pos = pygame.mouse.get_pos()
-                    glass_width = 64
-                    self.game_loop.add_entity(Glass(GameLoop.get_current_time(), 
+                    glass_width = 96
+                    pigeon_height = 64
+                    self.game_loop.add_entity(Pigeon(GameLoop.get_current_time(), 
                                                     pos[0]-glass_width/2-self.player.obj_offset.x,
-                                                    pos[1]-glass_width/2-self.player.obj_offset.y, 
-                                                    glass_width, 64, self.game_loop.player))
+                                                    pos[1]-pigeon_height/2-self.player.obj_offset.y, 
+                                                    glass_width, pigeon_height, self.game_loop.player))
 
             # Check game status
             if self.current_game_state == GameState.HOME:
