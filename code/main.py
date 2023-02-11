@@ -7,7 +7,7 @@ from loops.main_loop import MainLoop
 # Initialize pygame
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Five Nights at Newcastle")
+pygame.display.set_caption("Five Nights in Newcastle")
 
 # Creating background image and tiles
 bg_img = pygame.image.load("assets/test.png").convert() 
