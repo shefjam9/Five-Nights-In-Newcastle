@@ -123,7 +123,8 @@ def load_tilemap():
                        ObstacleID.OBJ_DRUNK: pygame.image.load("res\\Drunk_Dynamic.png").convert(),
                        ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug_Dynamic.png").convert(),
                        ObstacleID.OBJ_SPOONS: pygame.image.load("res\\Knife_Dynamic.png").convert_alpha(),
-                       ObstacleID.OBJ_POLICE: Animation("res\\Police_Animation.png", 2, 4)}
+                       ObstacleID.OBJ_POLICE: Animation("res\\Police_Animation.png", 2, 4),
+                       ObstacleID.OBJ_PIGEON: Animation("res\\Bottle_Animation.png", 8, 8)}
   if globals.TILE_SIZE != 128:
     _TILE_MAP = {id: pygame.transform.scale(_TILE_MAP[id], (globals.TILE_SIZE, globals.TILE_SIZE)) for id in _TILE_MAP}
     _DYNAMIC_TILE_MAP = {id: pygame.transform.scale(_DYNAMIC_TILE_MAP[id], (globals.TILE_SIZE, globals.TILE_SIZE)) for id in _DYNAMIC_TILE_MAP}

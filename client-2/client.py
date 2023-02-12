@@ -5,8 +5,10 @@ class Client:
     def __init__(self, host, port):
         self.host = host
         self.port = port
+        self.is_connected = False
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.host, self.port))
+        self.is_connected = True
         self.pos = Pos(0, 0)
     
     def send_obstacle(self, id, x, y):
