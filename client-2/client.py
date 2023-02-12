@@ -20,7 +20,7 @@ class Client:
         while True:
             data = self.socket.recv(1024)
             data_split = data.decode().split('[')
-            print(data_split)
-            self.pos = Pos(data_split[-1][0], data_split[-1][1])
+            last_message = data_split[-1].split(",")
+            self.pos = Pos(float(last_message[0]), float(last_message[1]))
             self.pos = Pos(*data.decode().split(','))
             print(f'Received: {self.pos.to_dict()}')

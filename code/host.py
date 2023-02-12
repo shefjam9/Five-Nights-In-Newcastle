@@ -1,4 +1,5 @@
 import socket
+import asyncio
 from misc.logger import log
 
 class Server:
@@ -29,5 +30,5 @@ class Server:
 
     def send_position(self):
         if self.init:
-            message = f"{self.player.rel.x},{self.player.rel.y},"
+            message = f"[{self.player.rel.x},{self.player.rel.y}"
             self.conn.send(message.encode())

@@ -1,6 +1,7 @@
 import pygame
 import time
 import threading
+import asyncio
 from misc.settings import *
 from misc.colours import Colours
 from text.text import ButtonText
