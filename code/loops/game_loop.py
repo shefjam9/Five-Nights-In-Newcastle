@@ -99,8 +99,3 @@ class GameLoop:
 
         # Send player data to server
         self.server.send_position()
-
-    def display_health(self):
-        """Display the health in the top right of the screen"""
-        title_position = Pos(140, 40)
-        self.health_text.render(f"Health: {self.player.health}%", self.health_text.primary, title_position, True)

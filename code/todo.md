@@ -1,11 +1,12 @@
 [x] - background tiles
 [x] - player movement
-[] - environment client
+[x] - environment client
 [x] - tile map
 [x] - start screen
-[] - server
+[x] - server
 [x] - entity rendering
 [x] - entity collisions
 [x] - enemy movement
+[] - timer
 [] - enemy collisions
 [] - enemy AI :skull:
