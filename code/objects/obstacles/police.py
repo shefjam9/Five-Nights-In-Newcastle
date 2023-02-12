@@ -26,7 +26,7 @@ class Police(Obstacle):
        self.current_axis = 0
        self.view_dist = 1000
        self.speed = 1.2
-       self.damage = 15
+       self.damage_amount = 15
     
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
