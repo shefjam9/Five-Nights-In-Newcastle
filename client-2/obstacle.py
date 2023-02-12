@@ -2,6 +2,7 @@ from enum import IntFlag
 import pygame
 import globals
 from anim import Animation
+import pygame.gfxdraw as gx
 
 class ObstacleID(IntFlag):
   """ Flag so can be used for efficient sending of multiple obstacles"""
@@ -219,7 +220,8 @@ def render(surface: pygame.Surface) -> None:
     _ob.render(surface, alpha_surface)
   surface.blit(alpha_surface, (0, 0))
   for _ob in _dynamic_obstacles:
-    _ob.render(surface)
+    gx.filled_circle(surface, _ob._x, _ob._y, 5, (255, 0, 0))
+    gx.aacircle(surface, _ob._x, _ob._y, 6, (255, 0, 0))
 
 def handle_input(event: pygame.event.Event):
   """ Handle events sent to the obstacle manager"""

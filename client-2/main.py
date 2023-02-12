@@ -8,6 +8,7 @@ import globals
 from player import Player
 from client import Client
 import threading
+import pygame.gfxdraw as gx
 
 """ -------- Client functions -----------"""
 
@@ -72,7 +73,8 @@ def _render():
   GameMap.render(_surface)
   ObstacleManager.render(_surface)
   pos_x, pos_y = 360 + 1200*float(_client.pos.x)/3200, 1200*float(_client.pos.y)/3200
-  pygame.draw.rect(_surface, (255, 0, 0), (pos_x, pos_y, 10, 10))
+  gx.filled_circle(_surface, pos_x, pos_y, 5, (255, 0, 0))
+  gx.aacircle(_surface, pos_x, pos_y, 6, (255, 0, 0))
 
   pygame.display.update()
 
