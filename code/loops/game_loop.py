@@ -73,9 +73,6 @@ class GameLoop:
             self.screen.blit(self.bg_img, (tile_x, tile_y))
             self.screen.blit(self.background_image, (tile_x, tile_y))
 
-        # Update health text
-        self.display_health()
-
         # Render entities
         for ent in self.entities:
             if ent != self.player:
