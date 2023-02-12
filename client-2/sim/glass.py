@@ -11,5 +11,5 @@ class Glass:
         pass
     
     def render(self, surface):
-        gx.filled_circle(surface, self.pos[0], self.pos[1], 10, (0, 255, 255))
-        gx.aacircle(surface, self.pos[0], self.pos[1], 10, (0, 255, 255))
+        gx.filled_circle(surface, int(self.pos[0]), int(self.pos[1]), 10, (0, 255, 255))
+        gx.aacircle(surface, int(self.pos[0]), int(self.pos[1]), 10, (0, 255, 255))
