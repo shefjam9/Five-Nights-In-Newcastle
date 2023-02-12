@@ -3,6 +3,7 @@ from misc.settings import *
 from misc.logger import log
 from misc.game_state import GameState
 from loops.game_loop import GameLoop
+from loops.game_loop import EndReason
 from loops.home_loop import HomeLoop
 from objects.player import Player
 from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, K_LSHIFT, MOUSEBUTTONDOWN, KEYUP, MOUSEBUTTONUP
@@ -46,8 +47,8 @@ class MainLoop:
                 elif event.type == pygame.MOUSEBUTTONUP:
                     # TODO remove as just test
                     pos = pygame.mouse.get_pos()
-                    glass_width = 128
-                    pigeon_height = 128
+                    if self.current_game_state == GameState.GAME:
+                        self.player.attack(pos, GameLoop.get_current_time())
 
             # Check game status
             if self.current_game_state == GameState.HOME:
@@ -55,6 +56,8 @@ class MainLoop:
                 self.home_loop.check_hover()
             elif self.current_game_state == GameState.GAME:
                 self.game_loop.tick()
+                if self.game_loop.game_ended != EndReason.END_NONE:
+                    self.current_game_state = GameState.QUIT
             elif self.current_game_state == GameState.QUIT:
                 running = False
 

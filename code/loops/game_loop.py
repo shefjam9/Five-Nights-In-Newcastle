@@ -10,6 +10,13 @@ from host import Server
 from pygame import gfxdraw as gx
 from text.text import HeadingText
 import math
+from enum import IntFlag
+
+
+class EndReason():
+    END_NONE = 1,
+    END_PLAYER_SURVIVE = 2,
+    END_PLAYER_DEATH = 3
 
 class GameLoop:
     """Game loop class"""
@@ -25,6 +32,7 @@ class GameLoop:
         self.background_image = pygame.image.load("assets/Background.png").convert()
         self.health_text = ButtonText(self.screen)
         self.camera = self.screen.get_rect().copy()
+        self.game_ended = EndReason.END_NONE
 
         # Add entities
         self.add_entity(self.player)
@@ -116,7 +124,7 @@ class GameLoop:
         # check the timer
         
         if time_diff >= self.run_time:
-            self.end_game()
+            self.game_ended = EndReason.END_PLAYER_SURVIVE
             
             
             

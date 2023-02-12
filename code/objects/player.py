@@ -11,7 +11,8 @@ class PlayerState(IntFlag):
     PLAYER_WALK_RIGHT = 2,
     PLAYER_WALK_DOWN = 3,
     PLAYER_WALK_UP = 4,
-    PLAYER_IDLE = 5
+    PLAYER_IDLE = 5,
+    PLAYER_ATTACK = 6
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, bg_img: pygame.Surface):
@@ -52,9 +53,11 @@ class Player(pygame.sprite.Sprite):
                       PlayerState.PLAYER_WALK_LEFT: Animation("assets/Player_Walk_Left.png", 62, 136, 6, 20),
                       PlayerState.PLAYER_WALK_RIGHT: Animation("assets/Player_Walk_Right.png", 62, 136, 6, 20),
                       PlayerState.PLAYER_WALK_UP: Animation("assets/Player_Walk_Up.png", 62, 136, 6, 20),
-                      PlayerState.PLAYER_WALK_DOWN: Animation("assets/Player_Walk_Down.png", 62, 136, 6, 20)}
+                      PlayerState.PLAYER_WALK_DOWN: Animation("assets/Player_Walk_Down.png", 80, 136, 6, 20),
+                      PlayerState.PLAYER_ATTACK: Animation("assets/Player_Attack_Down.png", 80, 150, 3, 30)}
 
         self.sprint_left = 100
+        self.attack_time = -1
 
     def boundary_check(self):
         """Check if player is within screen bounds"""
@@ -90,6 +93,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, key_pressed, time):
         """Update the player position based on key presses"""
+        print(f"Keys: {key_pressed}")
         self.hurt_this_tick = False
         has_moved = False
         if self.boundary_check():
@@ -97,14 +101,26 @@ class Player(pygame.sprite.Sprite):
 
         key_results = {K_w: (0, -self.speed), K_s: (0, self.speed), 
                        K_a: (-self.speed, 0), K_d: (self.speed, 0)}
+        key_states = {K_w: PlayerState.PLAYER_WALK_UP, K_s: PlayerState.PLAYER_WALK_DOWN,
+                      K_a: PlayerState.PLAYER_WALK_LEFT, K_d: PlayerState.PLAYER_WALK_RIGHT}
+        moving = False
+        for key in key_states:
+            if key_pressed[key] and self.current_state != PlayerState.PLAYER_ATTACK:
+                self.current_state = key_states[key]
+                moving = True
+        if not moving and self.current_state != PlayerState.PLAYER_ATTACK:
+            self.current_state = PlayerState.PLAYER_IDLE
         
-        if self.speed == self.sprint_speed:
+        if self.speed == self.sprint_speed and self.sprint_left:
             self.sprint_left = max(self.sprint_left - 0.15, 0)
         else:
             self.sprint_left = min(100, self.sprint_left + 0.1)
         
         if self.sprint_left == 0:
             self.set_sprint(False)
+
+        if self.current_state == PlayerState.PLAYER_ATTACK and time - self.attack_time > 750:
+            self.current_state = PlayerState.PLAYER_IDLE
         
         for key in key_results:
             hit_boundary = self.increment_boundary(key_pressed, key, key_results)
@@ -137,6 +153,13 @@ class Player(pygame.sprite.Sprite):
         pygame.draw.rect(self.surf, h_col, (1, 1 + int((self.rect.height-2)*(1-self.health/100)), 2, int((self.rect.height-2)*(self.health/100))))
         return has_moved
     
+    def attack(self, pos, time):
+        self.current_state = PlayerState.PLAYER_ATTACK
+        self.anims[PlayerState.PLAYER_ATTACK].current_frame = 0
+        self.anims[PlayerState.PLAYER_ATTACK].current_updates = 0
+        self.attack_time = time
+        
+
     def increment_boundary(self, key_pressed, key, key_results):
         """Move the player and check to see if they hit a wall, if they
         did the move back and return True, else return False"""
