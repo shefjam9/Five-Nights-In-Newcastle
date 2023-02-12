@@ -11,6 +11,8 @@ class Pigeon:
         self._client = _client
         self.speed = 0.375
         self.name = "pigeon"
+        self.font = pygame.font.SysFont("serif", 24)
+        self.text = self.font.render(self.font, True, (255, 0, 0))
 
 
     def update(self):
@@ -33,3 +35,4 @@ class Pigeon:
     def render(self, surface):
         gx.filled_circle(surface, int(self.pos[0]), int(self.pos[1]), 10, (0, 255, 0))
         gx.aacircle(surface, int(self.pos[0]), int(self.pos[1]), 10, (0, 255, 0))
+        surface.blit(self.font, (self.pos[0], self.pos[1]))
