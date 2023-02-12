@@ -18,13 +18,10 @@ class HomeLoop:
 
     def generate_buttons(self):
         self.generate_single_button(self.play_button_callback, 
-                                    Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.4)), 
+                                    Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.45)), 
                                     "PLAY")
-        self.generate_single_button(self.settings_button_callback,
-                                    Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.5)), 
-                                    "SETTINGS")
         self.generate_single_button(self.quit_button_callback,
-                                    Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.6)), 
+                                    Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.55)), 
                                     "QUIT")
 
     def generate_single_button(self, callback, pos: Pos, text: str):
