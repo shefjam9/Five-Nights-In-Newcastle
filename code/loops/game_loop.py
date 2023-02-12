@@ -52,8 +52,7 @@ class GameLoop:
         self.run_time = 120e3
         self.time_header = HeadingText(self.screen)
 
-        pygame.mixer.music.load("assets/music.wav")
-        pygame.mixer.music.play(-1)
+        self.initialised = False
         self.is_game_running = True
 
     def end_game(self):
@@ -74,6 +73,10 @@ class GameLoop:
         return time.perf_counter() * 1e3
 
     def tick(self):
+        if not self.initialised:
+            pygame.mixer.music.load("assets/music.wav")
+            pygame.mixer.music.play(-1)
+            self.initialised = True
         """Main game loop tick"""
         # Update position of bg tile
         self.player.set_bg_tile(self.tile)
