@@ -30,6 +30,9 @@ class Hobo(Obstacle):
         self.speed = 0.1
         self.current_state = random.choice([HoboState.STATE_SLEEP_LEFT, HoboState.STATE_SLEEP_RIGHT])
 
+    def run_ai(time):
+        pass
+
     def update(self, key_pressed, time):
         if super().fade_in(time):
            pygame.draw.circle(self.surf, (255, 0, 0, 50), (self.width/2, self.height/2), self._fade_in_radius)  
@@ -42,10 +45,7 @@ class Hobo(Obstacle):
         self.anims[self.current_state].render_frame(self.surf, 0, 0)
         self.tick_counter += 1
         
-        if self.tick_counter >= random.randint(5000, 15000):
-            self.tick_counter = 0
-            self.current_state = random.choice([HoboState.STATE_IDLE, HoboState.STATE_WALK_LEFT, HoboState.STATE_WALK_RIGHT])
-
+        self.run_ai()
         # Move after adjusting position
         self.adjust_position()
         if self.current_state == HoboState.STATE_WALK_LEFT:
