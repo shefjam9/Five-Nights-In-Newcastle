@@ -3,6 +3,8 @@ import pygame
 import globals
 from anim import Animation
 import pygame.gfxdraw as gx
+from sim.pigeon import Pigeon
+from sim.hobo import Hobo
 
 class ObstacleID(IntFlag):
   """ Flag so can be used for efficient sending of multiple obstacles"""
@@ -15,27 +17,9 @@ class ObstacleID(IntFlag):
   OBJ_PIGEON  =(1<<6)
 
 _TILE_MAP = {}
-_DYNAMIC_TILE_MAP = {}
-
-class DynamicObstacle:
-    
-    def __init__(self, obj_id: ObstacleID, init_pos: tuple, timestamp: float, lifespan: float):
-        self._id = obj_id
-        self._x = init_pos[0]
-        self._y = init_pos[1]
-        self._willdie = lifespan + timestamp
-        self._marked_for_deletion = False
-        print("Created dynamic obstacle")
-    
-    def render(self, surface):
-        _DYNAMIC_TILE_MAP[self._id].render(surface, self._x, self._y)
-      
-    def should_delete(self):
-        return self._marked_for_deletion
-      
-    def update(self, time):
-        if time >= self._willdie:
-            self._marked_for_deletion = True
+_nodes = []
+_node_map = {ObstacleID.OBJ_PIGEON: Pigeon,
+             ObstacleID.OBJ_DRUNK: Hobo}
 
 class Obstacle:
   def __init__(self, id: ObstacleID, timeout: int, lifespan: int, _client):
@@ -103,8 +87,8 @@ class Obstacle:
 
   def place(self, pos):
     """ Plcae objecte at place"""
-    add_dynamic(self.get_id(), (pos[0] - 5, pos[1] - 5), 
-                self._current_time, self._dynamic_lifespan)
+    global _nodes
+    _nodes.append(_node_map[self._id](pos[0], pos[1], self._client))
     self._last_used = self._current_time
     self._isavailable = False
     self._client.send_obstacle(self._id, pos[0], pos[1])
@@ -119,16 +103,8 @@ def load_tilemap():
                 ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug.png").convert_alpha(),
                 ObstacleID.OBJ_POLICE: pygame.image.load("res\\Police.png").convert_alpha(),
                 ObstacleID.OBJ_PIGEON: pygame.image.load("res\\Pigeon.png").convert_alpha()}
-  _DYNAMIC_TILE_MAP = {ObstacleID.OBJ_BOTTLE: Animation("res\\Bottle_Animation.png", 8, 8),
-                       ObstacleID.OBJ_DRUNK: pygame.image.load("res\\Drunk_Dynamic.png").convert(),
-                       ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug_Dynamic.png").convert(),
-                       ObstacleID.OBJ_SPOONS: pygame.image.load("res\\Knife_Dynamic.png").convert_alpha(),
-                       ObstacleID.OBJ_POLICE: Animation("res\\Police_Animation.png", 2, 4),
-                       ObstacleID.OBJ_PIGEON: Animation("res\\Bottle_Animation.png", 8, 8)}
   if globals.TILE_SIZE != 128:
     _TILE_MAP = {id: pygame.transform.scale(_TILE_MAP[id], (globals.TILE_SIZE, globals.TILE_SIZE)) for id in _TILE_MAP}
-    _DYNAMIC_TILE_MAP = {id: pygame.transform.scale(_DYNAMIC_TILE_MAP[id], (globals.TILE_SIZE, globals.TILE_SIZE)) for id in _DYNAMIC_TILE_MAP}
-
 
 _obstacles = []
 _dynamic_obstacles = []
@@ -143,18 +119,6 @@ def add_obstacle(id: ObstacleID, timeout: float, lifespan: int, client):
   """ Add obstacle to obstacles"""
   _obstacles.append(Obstacle(id, timeout, lifespan, client))
 
-def add_dynamic(id: ObstacleID, pos: tuple, time: float, lifespan: float):
-  _dynamic_obstacles.append(DynamicObstacle(id, pos, time, lifespan))
-
-def clear_dynamics(time):
-  to_remove = []
-  for obj in _dynamic_obstacles:
-    obj.update(time)
-    if obj.should_delete():
-      to_remove.append(obj)
-  for obj in to_remove:
-    _dynamic_obstacles.remove(obj)
-    print("Removed dynamic object!")
 
 def calc_bounds():
   """ Calculate the positions of all of the obstacles
@@ -206,7 +170,8 @@ def update(time: float):
   """ Update all obstacles"""
   for _ob in _obstacles:
     _ob.update(time)
-  clear_dynamics(time)
+  for node in _nodes:
+    node.update()
 
 def render(surface: pygame.Surface) -> None:
   """ Render all obstacles"""
@@ -217,9 +182,8 @@ def render(surface: pygame.Surface) -> None:
   for _ob in _obstacles:
     _ob.render(surface, alpha_surface)
   surface.blit(alpha_surface, (0, 0))
-  for _ob in _dynamic_obstacles:
-    gx.filled_circle(surface, int(_ob._x), int(_ob._y), 5, (255, 0, 0))
-    gx.aacircle(surface, int(_ob._x), int(_ob._y), 6, (255, 0, 0))
+  for node in _nodes:
+    node.render(surface)
   if _obj_selected != ObstacleID.OBJ_NONE:
     to_draw = _TILE_MAP[_obj_selected]
     m_pos = pygame.mouse.get_pos()
