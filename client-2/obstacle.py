@@ -10,7 +10,8 @@ class ObstacleID(IntFlag):
   OBJ_DRUNK = (1<<2),
   OBJ_SPOONS = (1<<3),
   OBJ_THUG = (1<<4),
-  OBJ_POLICE = (1<<5)
+  OBJ_POLICE = (1<<5),
+  OBJ_PIGEON  =(1<<6)
 
 _TILE_MAP = {}
 _DYNAMIC_TILE_MAP = {}
@@ -116,7 +117,8 @@ def load_tilemap():
                 ObstacleID.OBJ_DRUNK: pygame.image.load("res\\Drunk.png").convert_alpha(),
                 ObstacleID.OBJ_SPOONS: pygame.image.load("res\\Knife.png").convert(),
                 ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug.png").convert_alpha(),
-                ObstacleID.OBJ_POLICE: pygame.image.load("res\\Police.png").convert_alpha()}
+                ObstacleID.OBJ_POLICE: pygame.image.load("res\\Police.png").convert_alpha(),
+                ObstacleID.OBJ_PIGEON: pygame.image.load("res\\Pigeon.png")}
   _DYNAMIC_TILE_MAP = {ObstacleID.OBJ_BOTTLE: Animation("res\\Bottle_Animation.png", 8, 8),
                        ObstacleID.OBJ_DRUNK: pygame.image.load("res\\Drunk_Dynamic.png").convert(),
                        ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug_Dynamic.png").convert(),
