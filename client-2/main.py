@@ -20,7 +20,7 @@ def get_client_time_ms() -> float:
   return time.perf_counter() * 1e3
 
 _global_tickbase: int = 0                       # number of ticks elapsed on this client (help sync with other client)
-_ticks_per_second: int = 60                     # number of ticks per second
+_ticks_per_second: int = 120                     # number of ticks per second
 _ms_per_tick: float = 1e3 / _ticks_per_second   # ms per tick
 
 def get_client_time() -> int:
@@ -49,7 +49,7 @@ def _init():
   GameMap.init_map()
   if _clientmode:
     global _client, _client_thread
-    _client = Client('127.0.0.1', 8888)
+    _client = Client('192.168.239.174', 8888)
     _client_thread = threading.Thread(target=_client.run)
     _client_thread.setDaemon(True)
     _client_thread.start()
@@ -75,7 +75,7 @@ def _render():
   GameMap.render(_surface)
   ObstacleManager.render(_surface)
   if _clientmode:
-    pos_x, pos_y = int(360 + 1200*float(_client.pos.x)/3200), int(1200*float(_client.pos.y)/3200)
+    pos_x, pos_y = int(_client.pos.x), int(_client.pos.y)
   else:
     pos_x, pos_y = (200, 200)
   gx.filled_circle(_surface, pos_x, pos_y, 10, (255, 0, 0))
