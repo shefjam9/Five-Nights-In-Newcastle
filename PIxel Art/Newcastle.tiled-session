@@ -1,0 +1,38 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "Base.tsx": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 1
+        },
+        "outdoors.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "/home/davegaz/Documents/python/Five-Nights-In-Newcastle/PIxel Art/modern-city-assets",
+    "map.height": 500,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 1,
+    "map.tileWidth": 1,
+    "map.width": 500,
+    "openFiles": [
+    ],
+    "project": "Newcastle.tiled-project",
+    "recentFiles": [
+        "outdoors.tsx",
+        "Base.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 1,
+        "width": 1
+    }
+}
