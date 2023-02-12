@@ -18,8 +18,7 @@ class HomeLoop:
         self.main_loop = main_loop
         self.game_loop = game_loop
         self.generate_buttons()
-        pygame.mixer.music.load("assets/home.wav")
-        pygame.mixer.music.play(-1)
+        self.is_init = False
 
     def generate_buttons(self):
         self.generate_single_button(self.play_button_callback, 
@@ -38,6 +37,11 @@ class HomeLoop:
         self.buttons.append([button_rect, button, button_args])
 
     def tick(self):
+        if not self.is_init:
+            pygame.mixer.music.load("assets/home.wav")
+            pygame.mixer.music.play(-1)
+            self.is_init = True
+            
         """Tick home screen"""
         # Render background
         self.screen.fill(self.header_text.dark_background)
