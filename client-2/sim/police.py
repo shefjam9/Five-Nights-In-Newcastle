@@ -13,7 +13,7 @@ class Police:
         self._client = client
         global _NUM_POLICE
         _NUM_POLICE +=1
-        self.speed = 0.7
+        self.speed = 0.45
         self.name = f"copper{_NUM_POLICE}"
         self.font = pygame.font.SysFont("serif", 16)
         self.text = self.font.render(self.name, True, (255, 255, 0))
