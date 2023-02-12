@@ -150,7 +150,6 @@ def init_obstacles(x: float, y: float, time: float, client):
   add_obstacle(ObstacleID.OBJ_BOTTLE, 2e3, -1, client)
   add_obstacle(ObstacleID.OBJ_DRUNK, 5e3, -1, client)
   add_obstacle(ObstacleID.OBJ_POLICE, 11e3, -1, client)
-  add_obstacle(ObstacleID.OBJ_THUG, 7.5e3, -1, client)
   _tray = pygame.image.load("res\\Tray.png").convert_alpha()
   _x = (globals.SCREEN_DIMENSIONS[0] - _tray.get_width())/2
   _y = globals.SCREEN_DIMENSIONS[1] - 50
