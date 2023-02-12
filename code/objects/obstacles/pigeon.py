@@ -41,7 +41,6 @@ class Pigeon(Obstacle):
             mov_x, mov_y = vec_normalized[0]*self.speed, vec_normalized[1]*self.speed
 
             # Move and check for collision
-            print(self.collision_direction != self.current_state, self.collided)
             if self.collision_direction != self.current_state and self.collided:
                 if self.collision_direction == PigeonState.STATE_WALKING_LEFT:
                     self.move(mov_x+5, mov_y+5)
