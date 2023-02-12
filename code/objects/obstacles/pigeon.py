@@ -23,6 +23,7 @@ class Pigeon(Obstacle):
         self.see_player_range = 400
         self.current_state = PigeonState.STATE_PECKING
         self.collision_direction = PigeonState.STATE_PECKING
+        self.collided = False
         self.speed = 1
 
     def run_ai(self, time):
@@ -30,7 +31,7 @@ class Pigeon(Obstacle):
         if dist_to_player < self.see_player_range:
             # Avoid 0 division error
             self.current_state = PigeonState.STATE_WALKING_LEFT if self.player.rect.centerx < self.rect.centerx else PigeonState.STATE_WALKING_RIGHT
-            if dist_to_player == 0 or self.collision_direction == self.current_state:
+            if dist_to_player == 0:
                 return
             
             # Vector from pigeon to player
@@ -39,10 +40,19 @@ class Pigeon(Obstacle):
             mov_x, mov_y = vec_normalized[0]*self.speed, vec_normalized[1]*self.speed
 
             # Move and check for collision
-            self.move(mov_x, mov_y)
-            if self.check_collision(self.player.wall):
-                self.move(-(mov_x), -(mov_y))
-                self.collision_direction = self.current_state
+            print(self.collision_direction != self.current_state, self.collided)
+            if self.collision_direction != self.current_state and self.collided:
+                if self.collision_direction == PigeonState.STATE_WALKING_LEFT:
+                    self.move(mov_x+5, mov_y+5)
+                elif self.collision_direction == PigeonState.STATE_WALKING_RIGHT:
+                    self.move(mov_x-5, mov_y-5)
+                self.collided = False
+            elif not self.collided:
+                self.move(mov_x, mov_y)
+                if self.check_collision(self.player.wall):
+                    self.move(-(mov_x), -(mov_y))
+                    self.collision_direction = self.current_state
+                    self.collided = True
         else:
             self.current_state = PigeonState.STATE_PECKING
 
