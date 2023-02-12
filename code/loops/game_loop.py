@@ -28,7 +28,7 @@ class GameLoop:
         self.add_entity(self.player)
 
         # Server
-        self.server = Server('192.168.239.174', 8888, self.player)
+        self.server = Server('192.168.239.174', 8888, self.player, self)
         self.server_thread = threading.Thread(target=self.server.run)
         self.server_thread.setDaemon(True)
         self.server_thread.start()
