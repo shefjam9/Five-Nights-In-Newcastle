@@ -1,4 +1,5 @@
 import pygame
+import threading
 from misc.settings import *
 from misc.logger import log
 from misc.game_state import GameState
@@ -8,6 +9,7 @@ from objects.player import Player
 from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, K_LSHIFT, MOUSEBUTTONDOWN, KEYUP, MOUSEBUTTONUP
 from objects.obstacles.pigeon import Pigeon
 from objects.obstacles.drunkard import Hobo
+from host import Server
 
 class MainLoop:
     """Main game loop"""
@@ -20,6 +22,11 @@ class MainLoop:
         self.game_loop = GameLoop(self.screen, self.player, bg_img)
         self.home_loop = HomeLoop(self.screen, self)
         self.clock = pygame.time.Clock()
+
+        # Server
+        self.server = threading.Thread(target=Server, args=('127.0.0.1', 6969, self.player))
+        self.server.setDaemon(True)
+        self.server.start()
 
     def start(self):
         """Start the loop"""
@@ -64,4 +71,3 @@ class MainLoop:
 
             # Tick clock
             self.clock.tick(120)
-            # log(self.clock.get_fps(), "info")
