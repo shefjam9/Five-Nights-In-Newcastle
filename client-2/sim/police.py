@@ -16,7 +16,7 @@ class Police:
         self.speed = 0.45
         self.name = f"copper{_NUM_POLICE}"
         self.font = pygame.font.SysFont("serif", 16)
-        self.text = self.font.render(self.name, True, (255, 255, 0))
+        self.text = self.font.render(self.name, True, (100, 255, 100))
 
     def update(self):
         dist_to_player = ((self.pos[0] - self._client.pos.x)**2+(self.pos[1] - self._client.pos.y)**2)**0.5
