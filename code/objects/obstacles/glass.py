@@ -5,10 +5,10 @@ from misc.logger import log
 
 class Glass(Obstacle):
     """ITS A FUCKING GLASS!!"""
-    def __init__(self, time: float, x: int, y: int,  w: int, h: int, player):
-        super().__init__(time, x, y, 64, 64, player)
-        self.image = pygame.image.load("assets/Bottle.png").convert_alpha()
-        self.texture = pygame.transform.scale(self.image, (64, 64))
+    def __init__(self, time: float, x: int, y: int, player):
+        super().__init__(time, x, y, 128, 128, player)
+        self.image = pygame.image.load("assets/Shards.png").convert_alpha()
+        self.texture = pygame.transform.scale(self.image, (128, 128))
         self.filled = False
         self.player.add_ignore_entity_collision(self)
         self.damage_amount = 10

@@ -14,10 +14,7 @@ class Police(Obstacle):
     
     def __init__(self, time, x, y, player):
        """ Crikey it's the rozzers """
-       super().__init__(time, x, y, 64, 64, player)
-       self.fade_in_radius = 32
-       self.rect = (x, y, 64, 64)
-       self.surf = pygame.Surface((64, 64))
+       super().__init__(time, x, y, 80, 80, player)
        self.patrolling = True
        self.current_state = PoliceState.MOVE_LEFT
        self.anims = {PoliceState.MOVE_DOWN: Animation("assets/Police_Down.png", 80, 80, 2, 20),
@@ -39,7 +36,13 @@ class Police(Obstacle):
             #TODO move up and accross - AI can only move in horizontals
             dist_vert = self.player.rect.centery - self.rect.centery
             dist_hor = self.player.rect.centerx - self.rect.centerx
-            move_vector = (dist_hor/abs(dist_hor), 0) if abs(dist_hor)<abs(dist_vert) else (0, dist_vert/abs(dist_vert))
+            move_vector = None
+            if dist_vert == 0:
+                move_vector = (dist_hor/abs(dist_hor), 0)
+            elif dist_hor == 0:
+                move_vector = (0, dist_vert/abs(dist_vert))
+            else:
+                move_vector = (dist_hor/abs(dist_hor), 0) if abs(dist_hor)<abs(dist_vert) else (0, dist_vert/abs(dist_vert))
             self.move(move_vector[0]*10, move_vector[1]*10)
                 
               

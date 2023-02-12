@@ -30,7 +30,7 @@ class Pigeon(Obstacle):
         self.collision_direction = PigeonState.STATE_PECKING
         self.collided = False
         self.speed = 1
-        self.damage_amount = 1
+        self.damage_amount = 2.5
 
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
