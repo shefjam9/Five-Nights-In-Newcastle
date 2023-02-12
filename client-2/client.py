@@ -8,6 +8,9 @@ class Client:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.host, self.port))
         self.pos = Pos(0, 0)
+    
+    def send_obstacle(self, id, x, y):
+        self.send_data = f"{id},{x},{y}"
 
     def run(self):
         while True:

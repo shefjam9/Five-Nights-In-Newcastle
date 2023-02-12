@@ -52,6 +52,8 @@ class Player(pygame.sprite.Sprite):
                       PlayerState.PLAYER_WALK_UP: Animation("assets/Player_Walk_Up.png", 62, 136, 6, 20),
                       PlayerState.PLAYER_WALK_DOWN: Animation("assets/Player_Walk_Down.png", 62, 136, 6, 20)}
 
+        self.sprint_left = 100
+
     def boundary_check(self):
         """Check if player is within screen bounds"""
         return (self.rect.left > 300 and self.rect.right < SCREEN_WIDTH  - 300
@@ -92,6 +94,13 @@ class Player(pygame.sprite.Sprite):
         key_results = {K_w: (0, -self.speed), K_s: (0, self.speed), 
                        K_a: (-self.speed, 0), K_d: (self.speed, 0)}
         
+        if self.speed == self.sprint_speed:
+            self.sprint_left -= 0.15
+        else:
+            self.sprint_left = min(100, self.sprint_left + 0.1)
+        
+        print(self.sprint_left)
+        
         for key in key_results:
             hit_boundary = self.increment_boundary(key_pressed, key, key_results)
             if hit_boundary:
@@ -117,6 +126,10 @@ class Player(pygame.sprite.Sprite):
         self.anims[self.current_state].update(time)
         self.surf.fill(0)
         self.anims[self.current_state].render_frame(self.surf, 0, 0)
+        # draw dynamic healthbar
+        pygame.draw.rect(self.surf, (10, 10, 10), (0, 0, 4, self.rect.height))
+        h_col = (0, 255, 0) if self.health > 50 else (255, 0, 0)
+        pygame.draw.rect(self.surf, h_col, (1, 1 + int((self.rect.height-2)*(1-self.health/100)), 2, int((self.rect.height-2)*(self.health/100))))
         return has_moved
     
     def increment_boundary(self, key_pressed, key, key_results):

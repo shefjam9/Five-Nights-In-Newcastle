@@ -4,6 +4,7 @@ from pygame.locals import K_w, K_s, K_a, K_d
 from objects.animation import Animation
 from enum import IntFlag
 import random
+import math
 
 class HoboState(IntFlag):
     STATE_NONE = 1,
@@ -20,24 +21,39 @@ class Hobo(Obstacle):
         self.filled = False
         self.player.add_ignore_entity_collision(self)
         self.damage_amount = 50
-        self.anims = {HoboState.STATE_WALK_LEFT: Animation("assets/Hobo_Walking_Left.png", w, h, 7, 60, 100),
-                      HoboState.STATE_WALK_RIGHT: Animation("assets/Hobo_Walking_Right.png", w, h, 7, 60, 100),
+        self.anims = {HoboState.STATE_WALK_LEFT: Animation("assets/Hobo_Walking_Left.png", w, h, 7, 20, 30),
+                      HoboState.STATE_WALK_RIGHT: Animation("assets/Hobo_Walking_Right.png", w, h, 7, 20, 30),
                       HoboState.STATE_IDLE: Animation("assets/Hobo_Blinking_Center.png", w, h, 3, 150),
-                      HoboState.STATE_SLEEP_RIGHT : Animation("assets/Hobo_Sitting_Right.png", w, h, 5, 100),
-                      HoboState.STATE_SLEEP_LEFT : Animation("assets/Hobo_Sitting_Left.png", w, h, 5, 100)
+                      HoboState.STATE_SLEEP_RIGHT : Animation("assets/Hobo_Sitting_Right.png", w, h, 5, 20),
+                      HoboState.STATE_SLEEP_LEFT : Animation("assets/Hobo_Sitting_Left.png", w, h, 5, 20)
                       }
         self.tick_counter = 0
         self.speed = 0.1
         self.current_state = random.choice([HoboState.STATE_SLEEP_LEFT, HoboState.STATE_SLEEP_RIGHT])
         self.view_dist = 750
+        self.current_arc = 1
+        self.speed = 1.2
 
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
         if self.current_state == HoboState.STATE_SLEEP_RIGHT or self.current_state == HoboState.STATE_SLEEP_LEFT:
             awake_chance = 0.001
             mult = (self.view_dist-dist_to_player) / self.view_dist
-            if random.random() < mult/100+awake_chance:
+            if random.random() < mult/1000+awake_chance:
                 self.current_state = HoboState.STATE_IDLE
+        elif dist_to_player < self.view_dist:
+            if dist_to_player == 0:
+                return
+            
+            # Vector from pigeon to player
+            vec = (self.player.rect.centerx-self.rect.centerx, self.player.rect.centery-self.rect.centery)
+            vec_normalized = (vec[0]/dist_to_player, vec[1]/dist_to_player)
+            mov_x, mov_y = vec_normalized[0]*self.speed, vec_normalized[1]*self.speed
+            if mov_x > 0:
+                self.current_state = HoboState.STATE_WALK_RIGHT
+            elif mov_x <= 0:
+                self.current_state = HoboState.STATE_WALK_LEFT
+            self.move(mov_x, mov_y)
               
 
     def update(self, key_pressed, time):
@@ -55,7 +71,3 @@ class Hobo(Obstacle):
         self.run_ai(time)
         # Move after adjusting position
         self.adjust_position()
-        if self.current_state == HoboState.STATE_WALK_LEFT:
-            self.move(-self.speed, 0)
-        elif self.current_state == HoboState.STATE_WALK_RIGHT:
-            self.move(self.speed, 0)
