@@ -45,6 +45,8 @@ class Player(pygame.sprite.Sprite):
         self.rel = self.start_pos
         self.obj_offset = Pos(0, 0)
 
+        self.hurt_this_tick = False
+
         self.current_state = PlayerState.PLAYER_WALK_DOWN
         self.anims = {PlayerState.PLAYER_IDLE: Animation("assets/Player_Idle_Center.png", 62, 136, 5, 40),
                       PlayerState.PLAYER_WALK_LEFT: Animation("assets/Player_Walk_Left.png", 62, 136, 6, 20),
@@ -74,11 +76,12 @@ class Player(pygame.sprite.Sprite):
         else:
             self.speed = self.default_speed
 
-    def damage(self, ent):
+    def damage(self, ent, time):
         """Damage player"""
-        if not ent.has_damaged:
+        if ent.can_damage(time):
             self.health -= ent.damage_amount
-            ent.has_damaged = True
+            ent.set_damaged(time)
+            self.hurt_this_tick = True
             log(f"Health is now {self.health} (-{ent.damage_amount})")
 
     def add_ignore_entity_collision(self, entity):
@@ -87,6 +90,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, key_pressed, time):
         """Update the player position based on key presses"""
+        self.hurt_this_tick = False
         has_moved = False
         if self.boundary_check():
             self.collision = False
@@ -95,11 +99,12 @@ class Player(pygame.sprite.Sprite):
                        K_a: (-self.speed, 0), K_d: (self.speed, 0)}
         
         if self.speed == self.sprint_speed:
-            self.sprint_left -= 0.15
+            self.sprint_left = max(self.sprint_left - 0.15, 0)
         else:
             self.sprint_left = min(100, self.sprint_left + 0.1)
         
-        print(self.sprint_left)
+        if self.sprint_left == 0:
+            self.set_sprint(False)
         
         for key in key_results:
             hit_boundary = self.increment_boundary(key_pressed, key, key_results)
@@ -122,7 +127,7 @@ class Player(pygame.sprite.Sprite):
                             self.rel.y -= key_results[key][1]
                             self.rect.move_ip(-key_results[key][0], -key_results[key][1])
                             has_moved = False
-                        self.damage(ent)
+                        self.damage(ent, time)
         self.anims[self.current_state].update(time)
         self.surf.fill(0)
         self.anims[self.current_state].render_frame(self.surf, 0, 0)

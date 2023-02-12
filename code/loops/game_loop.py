@@ -79,7 +79,20 @@ class GameLoop:
             if ent != self.player:
                 self.screen.blit(ent.surf, ent.rect)
         self.screen.blit(self.player.surf, self.player.rect)
+        # draw sprint meter
+        pygame.draw.rect(self.screen, (10, 10, 10), (self.screen.get_width()/6, 
+                                                     self.screen.get_height()-25,
+                                                     4*self.screen.get_width()/6,
+                                                     20))
+        sprint_length = (self.player.sprint_left / 100) * (4 * self.screen.get_width()/6 - 10)
+        pygame.draw.rect(self.screen, (240, 240, 240), (self.screen.get_width()/6 + 5,
+                                                        self.screen.get_height()-20,
+                                                        sprint_length,
+                                                        10))
         self.player.set_entities(self.entities)
+        if self.player.hurt_this_tick:
+            print("Hurt overlay blit")
+            self.screen.fill((255, 0, 0, 128))
         pygame.display.flip()
 
         # Send player data to server

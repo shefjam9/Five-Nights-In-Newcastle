@@ -20,7 +20,9 @@ class Obstacle:
         self.rel = Pos(x, y)
         self.movement_amount = Pos(0, 0)
         self.damage_amount = 0
-        self.has_damaged = False
+        self.last_damaged = -1
+        # default damage every 1 second
+        self.damage_time = 1e3
 
     def update(keys_pressed, time):
         raise NotImplementedError("Obstacle needs update method")
@@ -37,6 +39,16 @@ class Obstacle:
     def move(self, x_amount, y_amount):
         self.movement_amount.x += x_amount
         self.movement_amount.y += y_amount
+    
+    def can_damage(self, time) -> bool:
+        if not self.damage_amount:
+            return False
+        if time - self.last_damaged >= self.damage_time:
+            return True
+        return False
+    
+    def set_damaged(self, time):
+        self.last_damaged = time
 
     def check_collision(self, color):
         """Check if obstacle collides with wall"""

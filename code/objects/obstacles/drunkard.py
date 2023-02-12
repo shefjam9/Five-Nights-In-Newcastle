@@ -20,7 +20,7 @@ class Hobo(Obstacle):
         super().__init__(time, x, y, w, h, player)
         self.filled = False
         self.player.add_ignore_entity_collision(self)
-        self.damage_amount = 50
+        self.damage_amount = 5
         self.anims = {HoboState.STATE_WALK_LEFT: Animation("assets/Hobo_Walking_Left.png", w, h, 7, 20, 30),
                       HoboState.STATE_WALK_RIGHT: Animation("assets/Hobo_Walking_Right.png", w, h, 7, 20, 30),
                       HoboState.STATE_IDLE: Animation("assets/Hobo_Blinking_Center.png", w, h, 3, 150),
