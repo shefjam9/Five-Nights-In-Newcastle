@@ -1,6 +1,8 @@
 import socket
-import asyncio
+import time
 from misc.logger import log
+from objects.obstacles.pigeon import Pigeon
+from objects.obstacles.obstacle import ObstacleID
 
 class Server:
     def __init__(self, host, port, player, game_loop):
@@ -30,7 +32,8 @@ class Server:
         while True:
             data = self.conn.recv(1024)
             split_data = data.decode().split(",")
-            _id, _x, _y = int(split_data[0]), float(split_data[1]), float(split_data[2])
+            id, x, y = int(split_data[0]), float(split_data[1]), float(split_data[2])
+            self.game_loop.add_entity(Pigeon(time.perf_counter(), x, y, self.player))
 
     def send_position(self):
         if self.init:
