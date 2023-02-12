@@ -7,3 +7,4 @@ class GameState(Enum):
     GAME = 2
     QUIT = 3
     WIN = 4
+    DEAD = 5

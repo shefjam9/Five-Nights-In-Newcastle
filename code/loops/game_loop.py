@@ -126,8 +126,14 @@ class GameLoop:
         self.server.send_position()
         # check the timer
         
+        self.check_death()
         if self.time_diff >= self.run_time:
             self.game_ended = EndReason.END_PLAYER_SURVIVE
+
+    def check_death(self):
+        """Check the death of the player"""
+        if self.player.health <= 0:
+            self.game_ended = EndReason.END_PLAYER_DEATH
             
             
             
