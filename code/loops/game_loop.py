@@ -73,9 +73,6 @@ class GameLoop:
             self.screen.blit(self.bg_img, (tile_x, tile_y))
             self.screen.blit(self.background_image, (tile_x, tile_y))
 
-        # Update health text
-        self.display_health()
-
         # Render entities
         for ent in self.entities:
             if ent != self.player:
@@ -99,8 +96,3 @@ class GameLoop:
 
         # Send player data to server
         self.server.send_position()
-
-    def display_health(self):
-        """Display the health in the top right of the screen"""
-        title_position = Pos(140, 40)
-        self.health_text.render(f"Health: {self.player.health}%", self.health_text.primary, title_position, True)
