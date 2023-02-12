@@ -29,7 +29,7 @@ def get_client_time() -> int:
 
 _surface: pygame.Surface = None
 
-_clientmode = False
+_clientmode = True
 _client = None
 _client_thread = None
 
@@ -49,7 +49,7 @@ def _init():
   GameMap.init_map()
   if _clientmode:
     global _client, _client_thread
-    _client = Client('192.168.239.174', 8888)
+    _client = Client('127.0.0.1', 8888)
     _client_thread = threading.Thread(target=_client.run)
     _client_thread.setDaemon(True)
     _client_thread.start()

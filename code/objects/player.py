@@ -97,7 +97,6 @@ class Player(pygame.sprite.Sprite):
     
     def update(self, key_pressed, time):
         """Update the player position based on key presses"""
-        print(f"Keys: {key_pressed}")
         self.hurt_this_tick = False
         has_moved = False
         if self.boundary_check():

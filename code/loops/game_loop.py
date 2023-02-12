@@ -12,6 +12,9 @@ from text.text import HeadingText
 import math
 from enum import IntFlag
 
+_SERVER_ADDR = '127.0.0.1'
+_SERVER_PORT = 8888
+
 
 class EndReason():
     END_NONE = 1,
@@ -38,7 +41,7 @@ class GameLoop:
         self.add_entity(self.player)
 
         # Server
-        self.server = Server('192.168.78.60', 8888, self.player, self)
+        self.server = Server(_SERVER_ADDR, _SERVER_PORT, self.player, self)
         self.server_thread = threading.Thread(target=self.server.run)
         self.server_thread.setDaemon(True)
         self.server_thread.start()

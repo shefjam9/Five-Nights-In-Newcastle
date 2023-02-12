@@ -6,9 +6,9 @@ from misc.logger import log
 class Glass(Obstacle):
     """ITS A FUCKING GLASS!!"""
     def __init__(self, time: float, x: int, y: int,  w: int, h: int, player):
-        super().__init__(time, x, y, w, h, player)
+        super().__init__(time, x, y, 64, 64, player)
         self.image = pygame.image.load("assets/Bottle.png").convert_alpha()
-        self.texture = pygame.transform.scale(self.image, (w, h))
+        self.texture = pygame.transform.scale(self.image, (64, 64))
         self.filled = False
         self.player.add_ignore_entity_collision(self)
         self.damage_amount = 10

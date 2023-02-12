@@ -14,7 +14,7 @@ class Police(Obstacle):
     
     def __init__(self, time, x, y, player):
        """ Crikey it's the rozzers """
-       super().__init__(time, x, y, player)
+       super().__init__(time, x, y, 64, 64, player)
        self.fade_in_radius = 32
        self.rect = (x, y, 64, 64)
        self.surf = pygame.Surface((64, 64))
