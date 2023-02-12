@@ -17,6 +17,7 @@ class GameLoop:
         self.bg_img = bg_img
         self.entities = []
         self.tile = [self.player.rect.x - (bg_img.get_width()/2), self.player.rect.y - (bg_img.get_height()/2)]
+        self.background_image = pygame.image.load("assets/Background.png").convert()
         self.health_text = ButtonText(self.screen)
         self.camera = self.screen.get_rect().copy()
 
@@ -46,7 +47,7 @@ class GameLoop:
         
         # update player
         player_collision = self.player.check_collision(self.player.wall)
-        has_moved = self.player.update(pressed_keys)
+        has_moved = self.player.update(pressed_keys, self.get_current_time())
         self.camera.center = self.player.rect.center
 
         # update other entities
@@ -61,6 +62,7 @@ class GameLoop:
 
         if tile_x > -self.bg_img.get_width() - self.player.rel.x:
             self.screen.blit(self.bg_img, (tile_x, tile_y))
+            self.screen.blit(self.background_image, (tile_x, tile_y))
 
         # Update health text
         self.display_health()

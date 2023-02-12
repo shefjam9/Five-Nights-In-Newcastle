@@ -4,7 +4,7 @@ from objects.pos import Pos
 
 class Obstacle:
 
-    def __init__(self, time, x, y, w, h, player):
+    def __init__(self, time, x, y, w, h, player, phys_rect: pygame.Rect = None):
         self.placementTime = time
         self.start_x, self.start_y = x, y
         self.width, self.height = w, h
@@ -12,6 +12,11 @@ class Obstacle:
         self._fade_in_radius = 5
         self.player = player
         self.rect = pygame.Rect(x, y, w, h)
+        if not phys_rect:
+            self.phys_rect = self.rect
+        else:
+            self.phys_rect = phys_rect
+        print(f"Phys rect: {self.phys_rect}")
         self.surf = pygame.Surface((w, h), pygame.SRCALPHA)
         self.rel = Pos(x, y)
         self.movement_amount = Pos(0, 0)
@@ -27,6 +32,9 @@ class Obstacle:
         self.rect.x = rel_x + self.movement_amount.x
         self.rect.y = rel_y + self.movement_amount.y
 
+        self.phys_rect.centerx = self.rect.centerx
+        self.phys_rect.centery = self.rect.centery
+
     def move(self, x_amount, y_amount):
         self.movement_amount.x += x_amount
         self.movement_amount.y += y_amount
@@ -34,13 +42,13 @@ class Obstacle:
     def check_collision(self, color):
         """Check if obstacle collides with wall"""
         try:
-            if self.player.bg_img.get_at((round(self.rect.left - self.player.bg_tile[0]), round(self.rect.top - self.player.bg_tile[1]))) == color:
+            if self.player.bg_img.get_at((round(self.phys_rect.left - self.player.bg_tile[0]), round(self.phys_rect.top - self.player.bg_tile[1]))) == color:
                 return True
-            elif self.player.bg_img.get_at((round(self.rect.left - self.player.bg_tile[0]), round(self.rect.bottom - self.player.bg_tile[1]))) == color:
+            elif self.player.bg_img.get_at((round(self.phys_rect.left - self.player.bg_tile[0]), round(self.phys_rect.bottom - self.player.bg_tile[1]))) == color:
                 return True
-            elif self.player.bg_img.get_at((round(self.rect.right - self.player.bg_tile[0]), round(self.rect.top - self.player.bg_tile[1]))) == color:
+            elif self.player.bg_img.get_at((round(self.phys_rect.right - self.player.bg_tile[0]), round(self.phys_rect.top - self.player.bg_tile[1]))) == color:
                 return True
-            elif self.player.bg_img.get_at((round(self.rect.right - self.player.bg_tile[0]), round(self.rect.bottom - self.player.bg_tile[1]))) == color:
+            elif self.player.bg_img.get_at((round(self.phys_rect.right - self.player.bg_tile[0]), round(self.phys_rect.bottom - self.player.bg_tile[1]))) == color:
                 return True
         except Exception as e:
             print(e)
