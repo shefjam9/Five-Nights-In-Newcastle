@@ -17,7 +17,8 @@ class GameLoop:
         self.player = player
         self.bg_img = bg_img
         self.entities = []
-        self.tile = [self.player.rect.x - (bg_img.get_width()/2), self.player.rect.y - (bg_img.get_height()/2)]
+        # self.tile = [self.player.rect.x - (bg_img.get_width()/2), self.player.rect.y - (bg_img.get_height()/2)]
+        self.tile = [0, 0]
         self.background_image = pygame.image.load("assets/Background.png").convert()
         self.health_text = ButtonText(self.screen)
         self.camera = self.screen.get_rect().copy()

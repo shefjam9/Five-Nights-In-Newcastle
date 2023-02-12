@@ -131,7 +131,7 @@ class Player(pygame.sprite.Sprite):
         self.anims[self.current_state].update(time)
         self.surf.fill(0)
         self.anims[self.current_state].render_frame(self.surf, 0, 0)
-        # draw dynamic healthbar
+        # draw dynamic health bar
         pygame.draw.rect(self.surf, (10, 10, 10), (0, 0, 4, self.rect.height))
         h_col = (0, 255, 0) if self.health > 50 else (255, 0, 0)
         pygame.draw.rect(self.surf, h_col, (1, 1 + int((self.rect.height-2)*(1-self.health/100)), 2, int((self.rect.height-2)*(self.health/100))))
