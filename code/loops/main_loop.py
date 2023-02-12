@@ -36,6 +36,8 @@ class MainLoop:
                     if event.key == K_ESCAPE:
                         if self.current_game_state in [GameState.GAME, GameState.WIN, GameState.DEAD]:
                             pygame.mixer.music.stop()
+                            self.game_loop.initialised = False
+                            self.home_loop.is_init = False
                             self.current_game_state = GameState.HOME
                         elif self.current_game_state == GameState.HOME:
                             running = False
