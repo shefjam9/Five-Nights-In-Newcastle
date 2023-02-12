@@ -16,7 +16,6 @@ class Obstacle:
             self.phys_rect = self.rect
         else:
             self.phys_rect = phys_rect
-        print(f"Phys rect: {self.phys_rect}")
         self.surf = pygame.Surface((w, h), pygame.SRCALPHA)
         self.rel = Pos(x, y)
         self.movement_amount = Pos(0, 0)
