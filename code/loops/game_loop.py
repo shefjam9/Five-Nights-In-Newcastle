@@ -74,6 +74,7 @@ class GameLoop:
 
     def tick(self):
         if not self.initialised:
+            pygame.mixer.music.stop()
             pygame.mixer.music.load("assets/music.wav")
             pygame.mixer.music.play(-1)
             self.initialised = True

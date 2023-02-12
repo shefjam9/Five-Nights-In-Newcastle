@@ -6,6 +6,7 @@ from objects.pos import Pos
 from objects.button import Button
 from text.text import HeaderText
 from loops.game_loop import GameLoop, EndReason
+from pygame import mixer
 
 class HomeLoop:
     """Home loop class"""
@@ -17,6 +18,8 @@ class HomeLoop:
         self.main_loop = main_loop
         self.game_loop = game_loop
         self.generate_buttons()
+        pygame.mixer.music.load("assets/home.wav")
+        pygame.mixer.music.play(-1)
 
     def generate_buttons(self):
         self.generate_single_button(self.play_button_callback, 

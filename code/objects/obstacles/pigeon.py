@@ -71,8 +71,5 @@ class Pigeon(Obstacle):
             self.surf.fill(0)
             self.anims[self.current_state].update(time)
             self.anims[self.current_state].render_frame(self.surf, 0, 0)
-            pygame.draw.rect(self.surf, (255, 0, 0), 
-                             ((self.phys_rect.x - self.rect.x), (self.phys_rect.y - self.rect.y), 
-                              self.phys_rect.width, self.phys_rect.height), 1)
             self.run_ai(time)
         self.adjust_position()
