@@ -54,7 +54,6 @@ class Police(Obstacle):
         self.surf.fill(0)
         self.anims[self.current_state].update(time)
         self.anims[self.current_state].render_frame(self.surf, 0, 0)
-        self.tick_counter += 1
         
         self.run_ai(time)
         # Move after adjusting position
