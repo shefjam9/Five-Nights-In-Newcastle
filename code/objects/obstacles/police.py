@@ -17,6 +17,7 @@ class Police(Obstacle):
        super().__init__(time, x, y, 80, 80, player)
        self.patrolling = True
        self.current_state = PoliceState.MOVE_LEFT
+       self.player.add_ignore_entity_collision(self)
        self.anims = {PoliceState.MOVE_DOWN: Animation("assets/Police_Down.png", 80, 80, 2, 20),
                      PoliceState.MOVE_UP: Animation("assets/Police_Up.png", 80, 80, 2, 20),
                      PoliceState.MOVE_RIGHT: Animation("assets/Police_Right.png", 80, 80, 2, 20),
