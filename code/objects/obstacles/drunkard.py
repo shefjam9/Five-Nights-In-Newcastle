@@ -14,9 +14,12 @@ class HoboState(IntFlag):
     STATE_SLEEP_LEFT = 5
     STATE_SLEEP_RIGHT = 6
 
+_HOBO_WIDTH = 128
+_HOBO_HEIGHT = 128
+
 class Hobo(Obstacle):
     """ITS A FUCKING Homeless man :(!!"""
-    def __init__(self, time: float, x: int, y: int,  w: int, h: int, player):
+    def __init__(self, time: float, x: int, y: int,  player):
         super().__init__(time, x, y, w, h, player)
         self.filled = False
         self.player.add_ignore_entity_collision(self)

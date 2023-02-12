@@ -26,7 +26,8 @@ class Server:
     def listen(self):
         while True:
             data = self.conn.recv(1024)
-            print(data.decode())
+            split_data = data.decode().split(",")
+            _id, _x, _y = int(split_data[0]), float(split_data[1]), float(split_data[2])
 
     def send_position(self):
         if self.init:

@@ -2,6 +2,17 @@ import pygame
 from misc.logger import log
 from objects.pos import Pos
 
+from enum import IntFlag
+
+class ObstacleID(IntFlag):
+  """ Flag so can be used for efficient sending of multiple obstacles"""
+  OBJ_NONE = (1<<0),
+  OBJ_BOTTLE = (1<<1),
+  OBJ_DRUNK = (1<<2),
+  OBJ_SPOONS = (1<<3),
+  OBJ_THUG = (1<<4),
+  OBJ_POLICE = (1<<5)
+
 class Obstacle:
 
     def __init__(self, time, x, y, w, h, player, phys_rect: pygame.Rect = None):
