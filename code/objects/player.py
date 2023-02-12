@@ -3,6 +3,15 @@ from misc.settings import *
 from misc.logger import log
 from pygame.locals import K_w, K_s, K_a, K_d
 from objects.pos import Pos
+from enum import IntFlag
+from objects.animation import Animation
+
+class PlayerState(IntFlag):
+    PLAYER_WALK_LEFT = 1,
+    PLAYER_WALK_RIGHT = 2,
+    PLAYER_WALK_DOWN = 3,
+    PLAYER_WALK_UP = 4,
+    PLAYER_IDLE = 5
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, bg_img: pygame.Surface):
@@ -10,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         super(Player, self).__init__()
 
         # Initialize the player surface
-        self.surf = pygame.Surface((75, 25))
+        self.surf = pygame.Surface((62, 136), pygame.SRCALPHA)
         self.surf.fill((0, 0, 0))
         self.rect = self.surf.get_rect()
 
@@ -35,6 +44,13 @@ class Player(pygame.sprite.Sprite):
         # Relative positions
         self.rel = self.start_pos
         self.obj_offset = Pos(0, 0)
+
+        self.current_state = PlayerState.PLAYER_WALK_DOWN
+        self.anims = {PlayerState.PLAYER_IDLE: Animation("assets/Player_Idle_Center.png", 62, 136, 5, 40),
+                      PlayerState.PLAYER_WALK_LEFT: Animation("assets/Player_Walk_Left.png", 62, 136, 6, 20),
+                      PlayerState.PLAYER_WALK_RIGHT: Animation("assets/Player_Walk_Right.png", 62, 136, 6, 20),
+                      PlayerState.PLAYER_WALK_UP: Animation("assets/Player_Walk_Up.png", 62, 136, 6, 20),
+                      PlayerState.PLAYER_WALK_DOWN: Animation("assets/Player_Walk_Down.png", 62, 136, 6, 20)}
 
     def boundary_check(self):
         """Check if player is within screen bounds"""
@@ -67,7 +83,7 @@ class Player(pygame.sprite.Sprite):
         """Add entity to ignore collision"""
         self.ignore_entity_collision.append(entity)
 
-    def update(self, key_pressed):
+    def update(self, key_pressed, time):
         """Update the player position based on key presses"""
         has_moved = False
         if self.boundary_check():
@@ -75,6 +91,7 @@ class Player(pygame.sprite.Sprite):
 
         key_results = {K_w: (0, -self.speed), K_s: (0, self.speed), 
                        K_a: (-self.speed, 0), K_d: (self.speed, 0)}
+        
         for key in key_results:
             hit_boundary = self.increment_boundary(key_pressed, key, key_results)
             if hit_boundary:
@@ -97,6 +114,9 @@ class Player(pygame.sprite.Sprite):
                             self.rect.move_ip(-key_results[key][0], -key_results[key][1])
                             has_moved = False
                         self.damage(ent)
+        self.anims[self.current_state].update(time)
+        self.surf.fill(0)
+        self.anims[self.current_state].render_frame(self.surf, 0, 0)
         return has_moved
     
     def increment_boundary(self, key_pressed, key, key_results):
