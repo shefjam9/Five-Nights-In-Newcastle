@@ -43,7 +43,7 @@ class Police(Obstacle):
                 move_vector = (0, dist_vert/abs(dist_vert))
             else:
                 move_vector = (dist_hor/abs(dist_hor), 0) if abs(dist_hor)<abs(dist_vert) else (0, dist_vert/abs(dist_vert))
-            self.move(move_vector[0]*10, move_vector[1]*10)
+            self.move(move_vector[0]*1.2, move_vector[1]*1.2)
                 
               
 
