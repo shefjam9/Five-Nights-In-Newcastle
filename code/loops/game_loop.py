@@ -48,7 +48,7 @@ class GameLoop:
 
         # Countdown timer
         self.start_time = GameLoop.get_current_time()
-        self.run_time = 5e3
+        self.run_time = 120e3
         self.time_header = HeadingText(self.screen)
 
         self.is_game_running = True
