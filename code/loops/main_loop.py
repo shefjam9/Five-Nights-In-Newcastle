@@ -68,8 +68,14 @@ class MainLoop:
             elif self.current_game_state == GameState.GAME:
                 self.game_loop.tick()
                 if self.game_loop.game_ended == EndReason.END_PLAYER_SURVIVE:
+                    pygame.mixer.music.stop()
+                    self.game_loop.initialised = False
+                    self.home_loop.is_init = False
                     self.current_game_state = GameState.WIN
                 elif self.game_loop.game_ended == EndReason.END_PLAYER_DEATH:
+                    pygame.mixer.music.stop()
+                    self.game_loop.initialised = False
+                    self.home_loop.is_init = False
                     self.current_game_state = GameState.DEAD
             elif self.current_game_state == GameState.WIN:
                 self.win_loop.tick()
