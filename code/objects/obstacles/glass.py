@@ -2,6 +2,7 @@ import pygame
 from objects.obstacles.obstacle import Obstacle
 from pygame.locals import K_w, K_s, K_a, K_d
 from misc.logger import log
+from pygame import mixer
 
 class Glass(Obstacle):
     """ITS A FUCKING GLASS!!"""
@@ -12,6 +13,7 @@ class Glass(Obstacle):
         self.filled = False
         self.player.add_ignore_entity_collision(self)
         self.damage_amount = 10
+        mixer.Sound("assets/Bottle.mp3").play()
 
     def update(self, key_pressed, time):
         if super().fade_in(time):
