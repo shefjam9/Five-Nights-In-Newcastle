@@ -1,32 +1,46 @@
-from obstacle import Obstacle
+from objects.obstacles.obstacle import Obstacle
 from enum import IntFlag
 import pygame
-
+from objects.animation import Animation
 
 class PoliceState(IntFlag):
-    STATE_PATROL = 1,
-    STATE_CHASE = 2
+    MOVE_UP = 1,
+    MOVE_LEFT = 2,
+    MOVE_RIGHT = 3,
+    MOVE_DOWN = 4
 
 
 class Police(Obstacle):
     
     def __init__(self, time, x, y, player):
+       """ Crikey it's the rozzers """
        super().__init__(time, x, y, player)
        self.fade_in_radius = 32
        self.rect = (x, y, 64, 64)
        self.surf = pygame.Surface((64, 64))
-       self.current_state = PoliceState.STATE_PATROL
+       self.patrolling = True
+       self.current_state = PoliceState.MOVE_LEFT
+       self.anims = {PoliceState.MOVE_DOWN: Animation("assets/Police_Down.png", 80, 80, 2, 20),
+                     PoliceState.MOVE_UP: Animation("assets/Police_Up.png", 80, 80, 2, 20),
+                     PoliceState.MOVE_RIGHT: Animation("assets/Police_Right.png", 80, 80, 2, 20),
+                     PoliceState.MOVE_LEFT: Animation("assets/Police_Left.png", 80, 80, 2, 20)}
        # x axis
        self.current_axis = 0
     
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
-        if self.current_state == PoliceState.STATE_PATROL:
-            if dist_to_player < 200:
-                self.current_state == PoliceState.STATE_CHASE
-        elif self.current_state == PoliceState.STATE_CHASE:
-            #TODO move up and accross - AI can only move in horizontals
+        if dist_to_player < 200:
+            self.patrolling = False
+        else:
+            self.patrolling = True
+        if self.patrolling:
             pass
+        else:
+            #TODO move up and accross - AI can only move in horizontals
+            dist_vert = self.player.rect.centery - self.rect.centery
+            dist_hor = self.player.rect.centerx - self.rect.centerx
+            move_vector = (dist_hor/abs(dist_hor), 0) if abs(dist_hor)<abs(dist_vert) else (0, dist_vert/abs(dist_vert))
+            self.move(move_vector[0]*10, move_vector[1]*10)
                 
               
 

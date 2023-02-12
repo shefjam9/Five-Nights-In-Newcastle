@@ -11,7 +11,8 @@ class ObstacleID(IntFlag):
   OBJ_DRUNK = (1<<2),
   OBJ_SPOONS = (1<<3),
   OBJ_THUG = (1<<4),
-  OBJ_POLICE = (1<<5)
+  OBJ_POLICE = (1<<5),
+  OBJ_PIGEON = (1<<6)
 
 class Obstacle:
 

@@ -110,9 +110,9 @@ class GameLoop:
                                                         10))
         self.player.set_entities(self.entities)
         
-        time_diff = GameLoop.get_current_time() - self.start_time
-        mins = int(((self.run_time - time_diff)//60e3))
-        secs = int(((self.run_time - time_diff)%60e3)/1000)
+        self.time_diff = GameLoop.get_current_time() - self.start_time
+        mins = int(((self.run_time - self.time_diff)//60e3))
+        secs = int(((self.run_time - self.time_diff)%60e3)/1000)
         text = f"0{mins}:{secs}" if secs > 10 else f"0{mins}:0{secs}"
         self.time_header.render(text, (255, 255, 255), Pos(self.screen.get_width()/2, 100), True)
 
@@ -123,7 +123,7 @@ class GameLoop:
         self.server.send_position()
         # check the timer
         
-        if time_diff >= self.run_time:
+        if self.time_diff >= self.run_time:
             self.game_ended = EndReason.END_PLAYER_SURVIVE
             
             

@@ -5,6 +5,7 @@ from pygame.locals import K_w, K_s, K_a, K_d
 from objects.pos import Pos
 from enum import IntFlag
 from objects.animation import Animation
+from pygame import mixer
 
 class PlayerState(IntFlag):
     PLAYER_WALK_LEFT = 1,
@@ -58,6 +59,8 @@ class Player(pygame.sprite.Sprite):
 
         self.sprint_left = 100
         self.attack_time = -1
+        mixer.init()
+        self.hurt_sound = pygame.mixer.Sound("assets\Hurt.mp3")
 
     def boundary_check(self):
         """Check if player is within screen bounds"""
@@ -82,6 +85,7 @@ class Player(pygame.sprite.Sprite):
     def damage(self, ent, time):
         """Damage player"""
         if ent.can_damage(time):
+            self.hurt_sound.play()
             self.health -= ent.damage_amount
             ent.set_damaged(time)
             self.hurt_this_tick = True
@@ -90,7 +94,7 @@ class Player(pygame.sprite.Sprite):
     def add_ignore_entity_collision(self, entity):
         """Add entity to ignore collision"""
         self.ignore_entity_collision.append(entity)
-
+    
     def update(self, key_pressed, time):
         """Update the player position based on key presses"""
         print(f"Keys: {key_pressed}")
