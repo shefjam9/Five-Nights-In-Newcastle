@@ -7,8 +7,8 @@
 [x] - entity rendering
 [x] - entity collisions
 [x] - enemy movement
-[] - timer
-[] - end game
+[x] - timer
+[x] - end game
 [] - music
 
 # Nice to have
