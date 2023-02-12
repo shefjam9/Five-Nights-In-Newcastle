@@ -12,7 +12,7 @@ from text.text import HeadingText
 import math
 from enum import IntFlag
 
-_SERVER_ADDR = '127.0.0.1'
+_SERVER_ADDR = '192.168.239.174'
 _SERVER_PORT = 8888
 
 
@@ -48,7 +48,7 @@ class GameLoop:
 
         # Countdown timer
         self.start_time = GameLoop.get_current_time()
-        self.run_time = 120e3
+        self.run_time = 5e3
         self.time_header = HeadingText(self.screen)
 
         self.is_game_running = True

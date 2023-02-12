@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
         self.sprint_left = 100
         self.attack_time = -1
         mixer.init()
-        self.hurt_sound = pygame.mixer.Sound("assets\Hurt.mp3")
+        # self.hurt_sound = pygame.mixer.Sound("assets/Hurt.mp3")
 
     def boundary_check(self):
         """Check if player is within screen bounds"""
@@ -85,7 +85,7 @@ class Player(pygame.sprite.Sprite):
     def damage(self, ent, time):
         """Damage player"""
         if ent.can_damage(time):
-            self.hurt_sound.play()
+            # self.hurt_sound.play()
             self.health -= ent.damage_amount
             ent.set_damaged(time)
             self.hurt_this_tick = True

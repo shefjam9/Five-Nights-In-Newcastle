@@ -13,7 +13,7 @@ class Glass(Obstacle):
         self.filled = False
         self.player.add_ignore_entity_collision(self)
         self.damage_amount = 10
-        mixer.Sound("assets/Bottle.mp3").play()
+        # mixer.Sound("assets/Bottle.mp3").play()
 
     def update(self, key_pressed, time):
         if super().fade_in(time):

@@ -27,6 +27,7 @@ class Server:
                         ObstacleID.OBJ_PIGEON: Pigeon}
 
     def run(self):
+        log("Turning on server")
         while True:
             conn, addr = self.socket.accept()
             log("Connected to {addr}")

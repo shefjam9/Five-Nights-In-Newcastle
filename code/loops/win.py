@@ -1,26 +1,26 @@
 import pygame
-from misc.settings import *
+from text.text import HeaderText
 from misc.logger import log
-from misc.game_state import GameState
 from objects.pos import Pos
 from objects.button import Button
-from text.text import HeaderText
+from misc.game_state import GameState
+from misc.settings import *
 
-class HomeLoop:
-    """Home loop class"""
+class Win():
+    """THe player won?!"""
 
-    def __init__(self, screen: pygame.Surface, main_loop, game_loop) -> None:
+    def __init__(self, screen, player, main_loop) -> None:
         self.screen = screen
-        self.header_text = HeaderText(self.screen)
-        self.buttons = []
+        self.player = player
         self.main_loop = main_loop
-        self.game_loop = game_loop
+        self.buttons = []
+        self.header_text = HeaderText(self.screen)
         self.generate_buttons()
 
     def generate_buttons(self):
-        self.generate_single_button(self.play_button_callback, 
+        self.generate_single_button(self.back_to_home_button_callback, 
                                     Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.45)), 
-                                    "PLAY")
+                                    "BACK")
         self.generate_single_button(self.quit_button_callback,
                                     Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.55)), 
                                     "QUIT")
@@ -34,20 +34,16 @@ class HomeLoop:
         self.buttons.append([button_rect, button, button_args])
 
     def tick(self):
-        """Tick home screen"""
-        # Render background
+        """Game update"""
         self.screen.fill(self.header_text.dark_background)
-        
-        # Render title
+
         title_position = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.2))
-        self.header_text.render("FIVE NIGHTS IN NEWCASTLE", self.header_text.primary, title_position, True)
-        self.header_text.increment_header_font_size()
+        self.header_text.render("You survived...", self.header_text.primary, title_position, True)
 
         # Render buttons
         for button in self.buttons:
             button[1].render(*button[2])
 
-        # Reload screen
         pygame.display.flip()
 
     def check_pressed(self, event):
@@ -67,9 +63,9 @@ class HomeLoop:
     # Callbacks #
     #############
 
-    def play_button_callback(self):
+    def back_to_home_button_callback(self):
         log("Play button pressed")
-        self.main_loop.current_game_state = GameState.GAME
+        self.main_loop.current_game_state = GameState.HOME
         try: self.game_loop.countdown_timer_thread.start()
         except Exception as _: pass
 

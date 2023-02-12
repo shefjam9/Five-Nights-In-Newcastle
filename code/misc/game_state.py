@@ -6,3 +6,4 @@ class GameState(Enum):
     HOME = 1
     GAME = 2
     QUIT = 3
+    WIN = 4
