@@ -78,8 +78,8 @@ class HomeLoop:
     def play_button_callback(self):
         log("Play button pressed")
         self.main_loop.current_game_state = GameState.GAME
-        self.game_loop.start_time = GameLoop.get_current_time()
         self.game_loop.game_ended = EndReason.END_NONE
+        self.game_loop.start_time = GameLoop.get_current_time()
         try: self.game_loop.countdown_timer_thread.start()
         except Exception as _: pass
 
