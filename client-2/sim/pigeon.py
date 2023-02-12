@@ -1,6 +1,7 @@
 import random
 import math
 from pygame import gfxdraw as gx
+import pygame
 
 class Pigeon:
     
@@ -9,6 +10,7 @@ class Pigeon:
         self.pos  = [x, y]
         self._client = _client
         self.speed = 0.375
+        self.name = "pigeon"
 
 
     def update(self):

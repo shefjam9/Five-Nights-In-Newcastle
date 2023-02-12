@@ -33,19 +33,14 @@ class Hobo(Obstacle):
                       }
         self.tick_counter = 0
         self.speed = 0.1
-        self.current_state = random.choice([HoboState.STATE_SLEEP_LEFT, HoboState.STATE_SLEEP_RIGHT])
+        self.current_state = HoboState.STATE_IDLE
         self.view_dist = 750
         self.current_arc = 1
         self.speed = 1.2
 
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
-        if self.current_state == HoboState.STATE_SLEEP_RIGHT or self.current_state == HoboState.STATE_SLEEP_LEFT:
-            awake_chance = 0.001
-            mult = (self.view_dist-dist_to_player) / self.view_dist
-            if random.random() < mult/1000+awake_chance:
-                self.current_state = HoboState.STATE_IDLE
-        elif dist_to_player < self.view_dist:
+        if dist_to_player < self.view_dist:
             if dist_to_player == 0:
                 return
             

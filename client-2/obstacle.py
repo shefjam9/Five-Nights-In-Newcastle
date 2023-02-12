@@ -5,6 +5,7 @@ from anim import Animation
 import pygame.gfxdraw as gx
 from sim.pigeon import Pigeon
 from sim.hobo import Hobo
+from sim.glass import Glass
 
 class ObstacleID(IntFlag):
   """ Flag so can be used for efficient sending of multiple obstacles"""
@@ -19,7 +20,8 @@ class ObstacleID(IntFlag):
 _TILE_MAP = {}
 _nodes = []
 _node_map = {ObstacleID.OBJ_PIGEON: Pigeon,
-             ObstacleID.OBJ_DRUNK: Hobo}
+             ObstacleID.OBJ_DRUNK: Hobo,
+             ObstacleID.OBJ_BOTTLE: Glass}
 
 class Obstacle:
   def __init__(self, id: ObstacleID, timeout: int, lifespan: int, _client):
