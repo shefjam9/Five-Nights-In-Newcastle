@@ -1,6 +1,7 @@
 from enum import IntFlag
 import pygame
 import globals
+from anim import Animation
 
 class ObstacleID(IntFlag):
   """ Flag so can be used for efficient sending of multiple obstacles"""
@@ -8,7 +9,8 @@ class ObstacleID(IntFlag):
   OBJ_BOTTLE = (1<<1),
   OBJ_DRUNK = (1<<2),
   OBJ_SPOONS = (1<<3),
-  OBJ_THUG = (1<<4)
+  OBJ_THUG = (1<<4),
+  OBJ_POLICE = (1<<5)
 
 _TILE_MAP = {}
 _DYNAMIC_TILE_MAP = {}
@@ -24,7 +26,7 @@ class DynamicObstacle:
         print("Created dynamic obstacle")
     
     def render(self, surface):
-        surface.blit(_DYNAMIC_TILE_MAP[self._id], (self._x, self._y))
+        _DYNAMIC_TILE_MAP[self._id].render(surface, self._x, self._y)
       
     def should_delete(self):
         return self._marked_for_deletion
@@ -32,6 +34,7 @@ class DynamicObstacle:
     def update(self, time):
         if time >= self._willdie:
             self._marked_for_deletion = True
+        _DYNAMIC_TILE_MAP[self._id].update(time)
 
 class Obstacle:
   def __init__(self, id: ObstacleID, timeout: int, lifespan: int):
@@ -111,13 +114,16 @@ def load_tilemap():
   """ Load assets for obstacle tiles"""
   global _TILE_MAP
   global _DYNAMIC_TILE_MAP
-  _TILE_MAP = {ObstacleID.OBJ_BOTTLE: pygame.image.load("res\\Bottle.png").convert(),
+  _TILE_MAP = {ObstacleID.OBJ_BOTTLE: pygame.image.load("res\\Bottle.png").convert_alpha(),
                 ObstacleID.OBJ_DRUNK: pygame.image.load("res\\Drunk.png").convert_alpha(),
                 ObstacleID.OBJ_SPOONS: pygame.image.load("res\\Knife.png").convert(),
-                ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug.png").convert_alpha()}
-  _DYNAMIC_TILE_MAP = {ObstacleID.OBJ_BOTTLE: pygame.image.load("res\\Glass_Broken.png").convert(),
+                ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug.png").convert_alpha(),
+                ObstacleID.OBJ_POLICE: pygame.image.load("res\\Police.png").convert_alpha()}
+  _DYNAMIC_TILE_MAP = {ObstacleID.OBJ_BOTTLE: Animation("res\\Bottle_Animation.png", 8, 8),
                        ObstacleID.OBJ_DRUNK: pygame.image.load("res\\Drunk_Dynamic.png").convert(),
-                       ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug_Dynamic.png").convert()}
+                       ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug_Dynamic.png").convert(),
+                       ObstacleID.OBJ_SPOONS: pygame.image.load("res\\Knife_Dynamic.png").convert_alpha(),
+                       ObstacleID.OBJ_POLICE: Animation("res\\Police_Animation.png", 2, 4)}
   if globals.TILE_SIZE != 128:
     _TILE_MAP = {id: pygame.transform.scale(_TILE_MAP[id], (globals.TILE_SIZE, globals.TILE_SIZE)) for id in _TILE_MAP}
     _DYNAMIC_TILE_MAP = {id: pygame.transform.scale(_DYNAMIC_TILE_MAP[id], (globals.TILE_SIZE, globals.TILE_SIZE)) for id in _DYNAMIC_TILE_MAP}
@@ -128,6 +134,9 @@ _dynamic_obstacles = []
 _obj_selected = ObstacleID.OBJ_NONE
 _x, _y = 0, 0
 _width, _height = 0, 0
+_tray  = None
+
+_showing = False
 
 def add_obstacle(id: ObstacleID, timeout: float, lifespan: int):
   """ Add obstacle to obstacles"""
@@ -150,35 +159,36 @@ def calc_bounds():
   """ Calculate the positions of all of the obstacles
   Might as well only do it once
   """
+  y_offset = 70
+  x_offset = 20
   global _width, _height
-  # work out number of columns and rows
-  num_cols = 6 if len(_obstacles) > 6 else len(_obstacles)
-  num_rows = (len(_obstacles) // 6) + 1
-  # total width for the obstacle menu to take up
-  total_width = (1 + globals.TILE_SIZE)*6 + 1
-  # total width the actual obstacle tiles will take up
-  draw_width = total_width-2 if num_cols >= 6 else (len(_obstacles)*(1+globals.TILE_SIZE)-1)
-  draw_offset = int((total_width - draw_width) / 2)
-  # set their positions
-  for i, obj in enumerate(_obstacles):
-    x_ind = i % 6
-    y_ind = (i//6)
-    obj.set_pos(_x + draw_offset + x_ind*(globals.TILE_SIZE+1), _y + y_ind*globals.TILE_SIZE)
-  _width = total_width
-  _height = globals.TILE_SIZE
+  for i,obj in enumerate(_obstacles):
+    x_pos = i%6
+    y_pos = i//6
+    x = _x + x_offset + (globals.TILE_SIZE + 20)*x_pos
+    y = _y + y_offset + (globals.TILE_SIZE + 20)*y_pos
+    obj.set_pos(x, y)
+  _width = _tray.get_width()
+  _height = _tray.get_height()
+
+
     
 
 def init_obstacles(x: float, y: float, time: float):
   """ Initialise obstacles"""
   # load assets
   load_tilemap()
-  global _x, _y
+  global _x, _y, _tray
   _x, _y = x, y
   # -------------- ADD OBSTACLES HERE!!! --------------
   add_obstacle(ObstacleID.OBJ_BOTTLE, 1000, 10e3)
   add_obstacle(ObstacleID.OBJ_DRUNK, 10000, 5e3)
   add_obstacle(ObstacleID.OBJ_SPOONS, 5000, 2e3)
   add_obstacle(ObstacleID.OBJ_THUG, 7500, 5e3)
+  add_obstacle(ObstacleID.OBJ_POLICE, 11000, 20e3)
+  _tray = pygame.image.load("res\\Tray.png").convert_alpha()
+  _x = (globals.SCREEN_DIMENSIONS[0] - _tray.get_width())/2
+  _y = globals.SCREEN_DIMENSIONS[1] - 50
   # calculate obstacle bounds
   calc_bounds()
   # set their last used time
@@ -199,21 +209,29 @@ def update(time: float):
 
 def render(surface: pygame.Surface) -> None:
   """ Render all obstacles"""
+  surface.blit(_tray, (_x, _y))
+  if not _showing:
+    return
   alpha_surface = pygame.Surface(globals.SCREEN_DIMENSIONS, pygame.SRCALPHA)
   for _ob in _obstacles:
     _ob.render(surface, alpha_surface)
-  # Draw rect around obstacle menu TODO all these graphics are temporary
-  pygame.draw.rect(surface, (0, 0, 0), (_x, _y, _width, _height), 1)
   surface.blit(alpha_surface, (0, 0))
   for _ob in _dynamic_obstacles:
     _ob.render(surface)
 
 def handle_input(event: pygame.event.Event):
   """ Handle events sent to the obstacle manager"""
-  global _obj_selected
+  global _obj_selected, _showing, _y
   # we only care about mouse pressses
   if event.type == pygame.MOUSEBUTTONUP:
     pos = pygame.mouse.get_pos()
+    if not _showing:
+      if pos[1] >= globals.SCREEN_DIMENSIONS[1] - 50:
+        _showing = True
+        _y = globals.SCREEN_DIMENSIONS[1] - _tray.get_height()
+        calc_bounds()
+        print("Shown!!")
+        return
     found = False
     # if the mouse collides with any of the obstacles then set it to the currently selected
     for obj in _obstacles:

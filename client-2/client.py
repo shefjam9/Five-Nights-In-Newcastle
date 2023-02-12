@@ -5,10 +5,12 @@ import pygame
 import gamemap as GameMap
 import obstacle as ObstacleManager
 import globals
+from player import Player
 
 """ -------- Client functions -----------"""
 
 _running: bool = False
+_player_instance: Player = None
 
 def get_client_time_ms() -> float:
   """ Return client time in ms"""
@@ -39,6 +41,8 @@ def _init():
   # initialise client objects
   GameMap.init_map()
   ObstacleManager.init_obstacles(200, 1000, get_client_time_ms())
+  global _player_instance
+  _player_instance = Player("hello")
 
 def _handle_input():
   """ Handle all input"""
@@ -54,11 +58,13 @@ def _update():
   ctime = get_client_time_ms()
   GameMap.update(ctime)
   ObstacleManager.update(ctime)
+  _player_instance.update(ctime)
 
 def _render():
   """ Render the client """
   GameMap.render(_surface)
   ObstacleManager.render(_surface)
+  _player_instance.render(_surface)
   pygame.display.update()
 
 def run():
