@@ -46,7 +46,7 @@ def _init():
   # initialise client objects
   GameMap.init_map()
   global _client, _client_thread
-  _client = Client('127.0.0.1', 6969)
+  _client = Client('192.168.239.174', 8888)
   _client_thread = threading.Thread(target=_client.run)
   _client_thread.setDaemon(True)
   _client_thread.start()
