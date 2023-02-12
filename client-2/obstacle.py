@@ -104,7 +104,7 @@ class Obstacle:
 
   def place(self, pos):
     """ Plcae objecte at place"""
-    add_dynamic(self.get_id(), (pos[0] - globals.TILE_SIZE/2, pos[1] - globals.TILE_SIZE/2), 
+    add_dynamic(self.get_id(), (pos[0] - 5, pos[1] - 5), 
                 self._current_time, self._dynamic_lifespan)
     self._last_used = self._current_time
     self._isavailable = False
@@ -183,12 +183,11 @@ def init_obstacles(x: float, y: float, time: float, client):
   global _x, _y, _tray
   _x, _y = x, y
   # -------------- ADD OBSTACLES HERE!!! --------------
-  add_obstacle(ObstacleID.OBJ_PIGEON, 1000, 10e3, client)
-  add_obstacle(ObstacleID.OBJ_BOTTLE, 2e3, 1000, client)
-  add_obstacle(ObstacleID.OBJ_DRUNK, 10000, 5e3, client)
-  add_obstacle(ObstacleID.OBJ_SPOONS, 5000, 2e3, client)
-  add_obstacle(ObstacleID.OBJ_THUG, 7500, 5e3, client)
-  add_obstacle(ObstacleID.OBJ_POLICE, 11000, 20e3, client)
+  add_obstacle(ObstacleID.OBJ_PIGEON, 1e3, -1, client)
+  add_obstacle(ObstacleID.OBJ_BOTTLE, 2e3, -1, client)
+  add_obstacle(ObstacleID.OBJ_DRUNK, 5e3, -1, client)
+  add_obstacle(ObstacleID.OBJ_THUG, 7.5e3, -1, client)
+  add_obstacle(ObstacleID.OBJ_POLICE, 11e3, -1, client)
   _tray = pygame.image.load("res\\Tray.png").convert_alpha()
   _x = (globals.SCREEN_DIMENSIONS[0] - _tray.get_width())/2
   _y = globals.SCREEN_DIMENSIONS[1] - 50
@@ -220,8 +219,8 @@ def render(surface: pygame.Surface) -> None:
     _ob.render(surface, alpha_surface)
   surface.blit(alpha_surface, (0, 0))
   for _ob in _dynamic_obstacles:
-    gx.filled_circle(surface, _ob._x, _ob._y, 5, (255, 0, 0))
-    gx.aacircle(surface, _ob._x, _ob._y, 6, (255, 0, 0))
+    gx.filled_circle(surface, int(_ob._x), int(_ob._y), 5, (255, 0, 0))
+    gx.aacircle(surface, int(_ob._x), int(_ob._y), 6, (255, 0, 0))
 
 def handle_input(event: pygame.event.Event):
   """ Handle events sent to the obstacle manager"""

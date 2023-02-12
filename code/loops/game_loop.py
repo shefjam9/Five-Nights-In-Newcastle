@@ -7,7 +7,9 @@ from text.text import ButtonText
 from objects.pos import Pos
 from objects.player import Player
 from host import Server
-from loops.timer import CountdownTimer
+from pygame import gfxdraw as gx
+from text.text import HeadingText
+import math
 
 class GameLoop:
     """Game loop class"""
@@ -28,18 +30,20 @@ class GameLoop:
         self.add_entity(self.player)
 
         # Server
-        self.server = Server('192.168.239.174', 8888, self.player, self)
+        self.server = Server('192.168.78.60', 8888, self.player, self)
         self.server_thread = threading.Thread(target=self.server.run)
         self.server_thread.setDaemon(True)
         self.server_thread.start()
 
         # Countdown timer
-        self.countdown_timer = CountdownTimer(3, self.test)
-        self.countdown_timer_thread = threading.Thread(target=self.countdown_timer.run)
-        self.countdown_timer_thread.setDaemon(True)
+        self.start_time = GameLoop.get_current_time()
+        self.run_time = 120e3
+        self.time_header = HeadingText(self.screen)
 
-    def test(self):
-        print("Test")
+        self.is_game_running = True
+
+    def end_game(self):
+        self.is_game_running = False
 
     def add_entity(self, entity: pygame.sprite.Sprite):
         """Add an entity to the game (needs update method)"""
@@ -97,10 +101,22 @@ class GameLoop:
                                                         sprint_length,
                                                         10))
         self.player.set_entities(self.entities)
-        if self.player.hurt_this_tick:
-            print("Hurt overlay blit")
-            self.screen.fill((255, 0, 0, 128))
+        
+        time_diff = GameLoop.get_current_time() - self.start_time
+        mins = int(((self.run_time - time_diff)//60e3))
+        secs = int(((self.run_time - time_diff)%60e3)/1000)
+        text = f"0{mins}:{secs}" if secs > 10 else f"0{mins}:0{secs}"
+        self.time_header.render(text, (255, 255, 255), Pos(self.screen.get_width()/2, 100), True)
+
+
         pygame.display.flip()
 
         # Send player data to server
         self.server.send_position()
+        # check the timer
+        
+        if time_diff >= self.run_time:
+            self.end_game()
+            
+            
+            

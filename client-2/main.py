@@ -29,6 +29,7 @@ def get_client_time() -> int:
 
 _surface: pygame.Surface = None
 
+_clientmode = False
 _client = None
 _client_thread = None
 
@@ -46,11 +47,12 @@ def _init():
   _running = True
   # initialise client objects
   GameMap.init_map()
-  global _client, _client_thread
-  _client = Client('192.168.239.174', 8888)
-  _client_thread = threading.Thread(target=_client.run)
-  _client_thread.setDaemon(True)
-  _client_thread.start()
+  if _clientmode:
+    global _client, _client_thread
+    _client = Client('192.168.239.174', 8888)
+    _client_thread = threading.Thread(target=_client.run)
+    _client_thread.setDaemon(True)
+    _client_thread.start()
   ObstacleManager.init_obstacles(200, 1000, get_client_time_ms(), _client)
 
 def _handle_input():
@@ -72,9 +74,13 @@ def _render():
   """ Render the client """
   GameMap.render(_surface)
   ObstacleManager.render(_surface)
-  pos_x, pos_y = 360 + 1200*float(_client.pos.x)/3200, 1200*float(_client.pos.y)/3200
-  gx.filled_circle(_surface, pos_x, pos_y, 5, (255, 0, 0))
-  gx.aacircle(_surface, pos_x, pos_y, 6, (255, 0, 0))
+  if _clientmode:
+    pos_x, pos_y = int(360 + 1200*float(_client.pos.x)/3200), int(1200*float(_client.pos.y)/3200)
+  else:
+    pos_x, pos_y = (200, 200)
+  gx.filled_circle(_surface, pos_x, pos_y, 10, (255, 0, 0))
+  gx.aacircle(_surface, pos_x, pos_y, 10, (255, 0, 0))
+
 
   pygame.display.update()
 
