@@ -1,11 +1,12 @@
 import pygame
 import time
-import random
+import threading
 from misc.settings import *
 from misc.colours import Colours
 from text.text import ButtonText
 from objects.pos import Pos
 from objects.player import Player
+from host import Server
 
 class GameLoop:
     """Game loop class"""
@@ -23,6 +24,12 @@ class GameLoop:
 
         # Add entities
         self.add_entity(self.player)
+
+        # Server
+        self.server = Server('127.0.0.1', 6969, self.player)
+        self.server_thread = threading.Thread(target=self.server.run)
+        self.server_thread.setDaemon(True)
+        self.server_thread.start()
 
     def add_entity(self, entity: pygame.sprite.Sprite):
         """Add an entity to the game (needs update method)"""
@@ -74,6 +81,9 @@ class GameLoop:
         self.screen.blit(self.player.surf, self.player.rect)
         self.player.set_entities(self.entities)
         pygame.display.flip()
+
+        # Send player data to server
+        self.server.send_position()
 
     def display_health(self):
         """Display the health in the top right of the screen"""

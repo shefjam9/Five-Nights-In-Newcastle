@@ -1,11 +1,19 @@
 import socket
+from objects.pos import Pos
 
-HOST = '127.0.0.1'
-PORT = 6969
+class Client:
+    def __init__(self, host, port):
+        self.host = host
+        self.port = port
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.host, self.port))
+        self.pos = Pos(0, 0)
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall(b'Hello, world')
-    data = s.recv(1024)
+    def run(self):
+        while True:
+            data = self.socket.recv(1024)
+            self.pos = Pos(*data.decode().split(','))
+            print(f'Received: {self.pos.to_dict()}')
 
-print('Received', repr(data))
+client = Client('127.0.0.1', 6969)
+client.run()
