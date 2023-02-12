@@ -1,4 +1,5 @@
 import socket
+from misc.logger import log
 
 class Server:
     def __init__(self, host, port, player):
@@ -15,12 +16,18 @@ class Server:
     def run(self):
         while True:
             conn, addr = self.socket.accept()
+            log("Connected to {addr}")
             self.conn = conn
             self.addr = addr
             self.init = True
-            return
+            self.listen()
+        
+    def listen(self):
+        while True:
+            data = self.conn.recv(1024)
+            print(data.decode())
 
     def send_position(self):
         if self.init:
-            message = f"{self.player.rel.x},{self.player.rel.y}"
-            self.conn.sendall(message.encode())
+            message = f"{self.player.rel.x},{self.player.rel.y},"
+            self.conn.send(message.encode())
