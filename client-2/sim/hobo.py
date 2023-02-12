@@ -1,8 +1,10 @@
 import random
 import math
 from pygame import gfxdraw as gx
+import pygame
 
 
+_NUM_HOBOS = 0
 
 class Hobo:
     
@@ -11,7 +13,11 @@ class Hobo:
         self.pos = [x, y]
         self._client = client
         self.speed = 0.45
-        self.name = "hobo"
+        global _NUM_HOBOS
+        _NUM_HOBOS += 1
+        self.name = f"hobo{_NUM_HOBOS}"
+        self.font = pygame.font.SysFont("serif", 16)
+        self.text = self.font.render(self.name, True, (0, 255, 0))
     
     def update(self):
         
@@ -30,3 +36,6 @@ class Hobo:
     def render(self, surface):
         gx.filled_circle(surface, int(self.pos[0]), int(self.pos[1]), 10, (255, 255, 0))
         gx.aacircle(surface, int(self.pos[0]), int(self.pos[1]), 10, (255, 255, 0))
+        text_x = self.pos[0] - self.text.get_width()/2
+        text_y = self.pos[1] + 15
+        surface.blit(self.text, (text_x, text_y))

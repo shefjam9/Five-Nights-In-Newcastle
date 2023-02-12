@@ -3,6 +3,9 @@ import math
 from pygame import gfxdraw as gx
 import pygame
 
+
+_NUM_PIGEONS = 0
+
 class Pigeon:
     
 
@@ -10,9 +13,11 @@ class Pigeon:
         self.pos  = [x, y]
         self._client = _client
         self.speed = 0.375
-        self.name = "pigeon"
-        self.font = pygame.font.SysFont("serif", 24)
-        self.text = self.font.render(self.name, True, (255, 0, 0))
+        global _NUM_PIGEONS
+        _NUM_PIGEONS += 1
+        self.name = f"pigeon{_NUM_PIGEONS}"
+        self.font = pygame.font.SysFont("serif", 16)
+        self.text = self.font.render(self.name, True, (0, 255, 0))
 
 
     def update(self):
@@ -35,4 +40,6 @@ class Pigeon:
     def render(self, surface):
         gx.filled_circle(surface, int(self.pos[0]), int(self.pos[1]), 10, (0, 255, 0))
         gx.aacircle(surface, int(self.pos[0]), int(self.pos[1]), 10, (0, 255, 0))
-        surface.blit(self.font, (self.pos[0], self.pos[1]))
+        text_x = self.pos[0] - self.text.get_width()/2
+        text_y = self.pos[1] + 15
+        surface.blit(self.text, (text_x, text_y))
