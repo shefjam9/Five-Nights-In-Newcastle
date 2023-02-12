@@ -12,10 +12,13 @@ class PigeonState(IntFlag):
     STATE_WALKING_LEFT = 2
     STATE_WALKING_RIGHT = 3
 
+_PIGEON_WIDTH = 96
+_PIGEON_HEIGHT = 64
+
 class Pigeon(Obstacle):
     """ITS A FUCKING pigeon."""
-    def __init__(self, time: float, x: int, y: int,  w: int, h: int, player):
-        super().__init__(time, x, y, w, h, player, pygame.Rect(x, y, 64, 64))
+    def __init__(self, time: float, x: int, y: int, player):
+        super().__init__(time, x, y, _PIGEON_WIDTH, _PIGEON_HEIGHT, player, pygame.Rect(x, y, 64, 64))
         self.filled = False
         self.player.add_ignore_entity_collision(self)
 
