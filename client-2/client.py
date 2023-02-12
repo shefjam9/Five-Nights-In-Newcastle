@@ -13,11 +13,12 @@ class Client:
         s_x = 3600*(x-360)/1200
         s_y = 3600*y/1200
         self.send_data = f"{id},{s_x},{s_y}"
-        self.socket.sendall(self.send_data.encode())
+        self.socket.send(self.send_data.encode())
         print(f"Sent: {self.send_data}")
 
     def run(self):
         while True:
             data = self.socket.recv(1024)
+            print(data.decode())
             self.pos = Pos(*data.decode().split(','))
             print(f'Received: {self.pos.to_dict()}')
