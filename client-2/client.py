@@ -11,6 +11,7 @@ class Client:
     
     def send_obstacle(self, id, x, y):
         self.send_data = f"{id},{x},{y}"
+        self.socket.sendall(self.send_data.encode())
 
     def run(self):
         while True:
