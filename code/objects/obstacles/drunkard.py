@@ -20,6 +20,7 @@ _HOBO_HEIGHT = 128
 class Hobo(Obstacle):
     """ITS A FUCKING Homeless man :(!!"""
     def __init__(self, time: float, x: int, y: int,  player):
+        w, h = _HOBO_WIDTH, _HOBO_HEIGHT
         super().__init__(time, x, y, w, h, player)
         self.filled = False
         self.player.add_ignore_entity_collision(self)
