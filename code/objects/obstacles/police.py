@@ -23,6 +23,7 @@ class Police(Obstacle):
                      PoliceState.MOVE_LEFT: Animation("assets/Police_Left.png", 80, 80, 2, 20)}
        # x axis
        self.current_axis = 0
+       self.view_dist = 1000
     
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5

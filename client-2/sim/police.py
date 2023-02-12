@@ -13,13 +13,14 @@ class Police:
         self._client = client
         global _NUM_POLICE
         _NUM_POLICE +=1
+        self.speed = 0.7
         self.name = f"copper{_NUM_POLICE}"
         self.font = pygame.font.SysFont("serif", 16)
         self.text = self.font.render(self.name, True, (255, 255, 0))
 
     def update(self):
         dist_to_player = ((self.pos[0] - self._client.pos.x)**2+(self.pos[1] - self._client.pos.y)**2)**0.5
-        if dist_to_player < 281:
+        if dist_to_player < 375:
             if dist_to_player == 0:
                 return
             
