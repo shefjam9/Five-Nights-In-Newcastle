@@ -118,7 +118,7 @@ def load_tilemap():
                 ObstacleID.OBJ_SPOONS: pygame.image.load("res\\Knife.png").convert(),
                 ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug.png").convert_alpha(),
                 ObstacleID.OBJ_POLICE: pygame.image.load("res\\Police.png").convert_alpha(),
-                ObstacleID.OBJ_PIGEON: pygame.image.load("res\\Pigeon.png")}
+                ObstacleID.OBJ_PIGEON: pygame.image.load("res\\Pigeon.png").convert_alpha()}
   _DYNAMIC_TILE_MAP = {ObstacleID.OBJ_BOTTLE: Animation("res\\Bottle_Animation.png", 8, 8),
                        ObstacleID.OBJ_DRUNK: pygame.image.load("res\\Drunk_Dynamic.png").convert(),
                        ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug_Dynamic.png").convert(),
@@ -181,7 +181,8 @@ def init_obstacles(x: float, y: float, time: float, client):
   global _x, _y, _tray
   _x, _y = x, y
   # -------------- ADD OBSTACLES HERE!!! --------------
-  add_obstacle(ObstacleID.OBJ_BOTTLE, 1000, 10e3, client)
+  add_obstacle(ObstacleID.OBJ_PIGEON, 1000, 10e3, client)
+  add_obstacle(ObstacleID.OBJ_BOTTLE, 2e3, 1000, client)
   add_obstacle(ObstacleID.OBJ_DRUNK, 10000, 5e3, client)
   add_obstacle(ObstacleID.OBJ_SPOONS, 5000, 2e3, client)
   add_obstacle(ObstacleID.OBJ_THUG, 7500, 5e3, client)
