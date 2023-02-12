@@ -221,6 +221,13 @@ def render(surface: pygame.Surface) -> None:
   for _ob in _dynamic_obstacles:
     gx.filled_circle(surface, int(_ob._x), int(_ob._y), 5, (255, 0, 0))
     gx.aacircle(surface, int(_ob._x), int(_ob._y), 6, (255, 0, 0))
+  if _obj_selected != ObstacleID.OBJ_NONE:
+    to_draw = _TILE_MAP[_obj_selected]
+    m_pos = pygame.mouse.get_pos()
+    draw_pos = (m_pos[0] - to_draw.get_width()/2, m_pos[1] - to_draw.get_width()/2)
+    to_draw.set_alpha(128)
+    surface.blit(to_draw, draw_pos)
+    to_draw.set_alpha(255)
 
 def handle_input(event: pygame.event.Event):
   """ Handle events sent to the obstacle manager"""
