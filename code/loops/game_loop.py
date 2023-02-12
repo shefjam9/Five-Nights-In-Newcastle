@@ -11,6 +11,7 @@ from pygame import gfxdraw as gx
 from text.text import HeadingText
 import math
 from enum import IntFlag
+from pygame import mixer
 
 _SERVER_ADDR = '192.168.239.174'
 _SERVER_PORT = 8888
@@ -51,10 +52,13 @@ class GameLoop:
         self.run_time = 120e3
         self.time_header = HeadingText(self.screen)
 
+        pygame.mixer.music.load("assets/music.wav")
+        pygame.mixer.music.play(-1)
         self.is_game_running = True
 
     def end_game(self):
         self.is_game_running = False
+        pygame.mixer.music.stop()
 
     def add_entity(self, entity: pygame.sprite.Sprite):
         """Add an entity to the game (needs update method)"""
