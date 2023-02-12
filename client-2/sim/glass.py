@@ -11,7 +11,7 @@ class Glass:
         _NUM_GLASS += 1
         self.name = f"glass{_NUM_GLASS}"
         self.font = pygame.font.SysFont("serif", 16)
-        self.text = self.font.render(self.name, True, (0, 255, 0))
+        self.text = self.font.render(self.name, True, (0, 255, 255))
     
     def update(self):
         pass

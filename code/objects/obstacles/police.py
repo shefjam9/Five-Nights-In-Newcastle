@@ -26,24 +26,15 @@ class Police(Obstacle):
     
     def run_ai(self, time):
         dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
-        if dist_to_player < 200:
-            self.patrolling = False
-        else:
-            self.patrolling = True
-        if self.patrolling:
-            pass
-        else:
-            #TODO move up and accross - AI can only move in horizontals
-            dist_vert = self.player.rect.centery - self.rect.centery
-            dist_hor = self.player.rect.centerx - self.rect.centerx
-            move_vector = None
-            if dist_vert == 0:
-                move_vector = (dist_hor/abs(dist_hor), 0)
-            elif dist_hor == 0:
-                move_vector = (0, dist_vert/abs(dist_vert))
-            else:
-                move_vector = (dist_hor/abs(dist_hor), 0) if abs(dist_hor)<abs(dist_vert) else (0, dist_vert/abs(dist_vert))
-            self.move(move_vector[0]*1.2, move_vector[1]*1.2)
+        if dist_to_player < self.view_dist:
+            if dist_to_player == 0:
+                return
+            
+            # Vector from pigeon to player
+            vec = (self.player.rect.centerx-self.rect.centerx, self.player.rect.centery-self.rect.centery)
+            vec_normalized = (vec[0]/dist_to_player, vec[1]/dist_to_player)
+            mov_x, mov_y = vec_normalized[0]*self.speed, vec_normalized[1]*self.speed
+            self.move(mov_x, mov_y)
                 
               
 

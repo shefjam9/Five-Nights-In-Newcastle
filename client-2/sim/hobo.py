@@ -17,7 +17,7 @@ class Hobo:
         _NUM_HOBOS += 1
         self.name = f"hobo{_NUM_HOBOS}"
         self.font = pygame.font.SysFont("serif", 16)
-        self.text = self.font.render(self.name, True, (0, 255, 0))
+        self.text = self.font.render(self.name, True, (255, 255, 0))
     
     def update(self):
         
