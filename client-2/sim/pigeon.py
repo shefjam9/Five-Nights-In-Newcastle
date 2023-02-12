@@ -12,7 +12,7 @@ class Pigeon:
         self.speed = 0.375
         self.name = "pigeon"
         self.font = pygame.font.SysFont("serif", 24)
-        self.text = self.font.render(self.font, True, (255, 0, 0))
+        self.text = self.font.render(self.name, True, (255, 0, 0))
 
 
     def update(self):
