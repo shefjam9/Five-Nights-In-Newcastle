@@ -9,7 +9,7 @@
 [x] - enemy movement
 [x] - timer
 [x] - end game
-[] - music
+[x] - music
 
 # Nice to have
 [] - enemy collisions
