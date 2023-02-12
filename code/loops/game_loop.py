@@ -1,13 +1,13 @@
 import pygame
 import time
 import threading
-import asyncio
 from misc.settings import *
 from misc.colours import Colours
 from text.text import ButtonText
 from objects.pos import Pos
 from objects.player import Player
 from host import Server
+from loops.timer import CountdownTimer
 
 class GameLoop:
     """Game loop class"""
@@ -33,6 +33,14 @@ class GameLoop:
         self.server_thread.setDaemon(True)
         self.server_thread.start()
 
+        # Countdown timer
+        self.countdown_timer = CountdownTimer(3, self.test)
+        self.countdown_timer_thread = threading.Thread(target=self.countdown_timer.run)
+        self.countdown_timer_thread.setDaemon(True)
+
+    def test(self):
+        print("Test")
+
     def add_entity(self, entity: pygame.sprite.Sprite):
         """Add an entity to the game (needs update method)"""
         self.entities.append(entity)
@@ -55,8 +63,8 @@ class GameLoop:
         pressed_keys = pygame.key.get_pressed()
         
         # update player
-        player_collision = self.player.check_collision(self.player.wall)
-        has_moved = self.player.update(pressed_keys, self.get_current_time())
+        _ = self.player.check_collision(self.player.wall)
+        _ = self.player.update(pressed_keys, self.get_current_time())
         self.camera.center = self.player.rect.center
 
         # update other entities

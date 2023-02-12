@@ -9,11 +9,12 @@ from text.text import HeaderText
 class HomeLoop:
     """Home loop class"""
 
-    def __init__(self, screen: pygame.Surface, main_loop) -> None:
+    def __init__(self, screen: pygame.Surface, main_loop, game_loop) -> None:
         self.screen = screen
         self.header_text = HeaderText(self.screen)
         self.buttons = []
         self.main_loop = main_loop
+        self.game_loop = game_loop
         self.generate_buttons()
 
     def generate_buttons(self):
@@ -69,6 +70,8 @@ class HomeLoop:
     def play_button_callback(self):
         log("Play button pressed")
         self.main_loop.current_game_state = GameState.GAME
+        try: self.game_loop.countdown_timer_thread.start()
+        except Exception as _: pass
 
     def settings_button_callback(self):
         log("Settings button pressed")

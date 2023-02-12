@@ -8,5 +8,11 @@
 [x] - entity collisions
 [x] - enemy movement
 [] - timer
+[] - end game
+[] - music
+
+# Nice to have
 [] - enemy collisions
 [] - enemy AI :skull:
+[] - glass slows player
+[] - change animations of players

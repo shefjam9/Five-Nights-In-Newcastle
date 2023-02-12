@@ -18,7 +18,7 @@ class MainLoop:
         self.player = Player(bg_img)
         self.bg_img = bg_img
         self.game_loop = GameLoop(self.screen, self.player, bg_img)
-        self.home_loop = HomeLoop(self.screen, self)
+        self.home_loop = HomeLoop(self.screen, self, self.game_loop)
         self.clock = pygame.time.Clock()
 
     def start(self):
