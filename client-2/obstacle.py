@@ -2,6 +2,7 @@ from enum import IntFlag
 import pygame
 import globals
 from anim import Animation
+import pygame.gfxdraw as gx
 
 class ObstacleID(IntFlag):
   """ Flag so can be used for efficient sending of multiple obstacles"""
@@ -118,12 +119,13 @@ def load_tilemap():
                 ObstacleID.OBJ_SPOONS: pygame.image.load("res\\Knife.png").convert(),
                 ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug.png").convert_alpha(),
                 ObstacleID.OBJ_POLICE: pygame.image.load("res\\Police.png").convert_alpha(),
-                ObstacleID.OBJ_PIGEON: pygame.image.load("res\\Pigeon.png")}
+                ObstacleID.OBJ_PIGEON: pygame.image.load("res\\Pigeon.png").convert_alpha()}
   _DYNAMIC_TILE_MAP = {ObstacleID.OBJ_BOTTLE: Animation("res\\Bottle_Animation.png", 8, 8),
                        ObstacleID.OBJ_DRUNK: pygame.image.load("res\\Drunk_Dynamic.png").convert(),
                        ObstacleID.OBJ_THUG: pygame.image.load("res\\Thug_Dynamic.png").convert(),
                        ObstacleID.OBJ_SPOONS: pygame.image.load("res\\Knife_Dynamic.png").convert_alpha(),
-                       ObstacleID.OBJ_POLICE: Animation("res\\Police_Animation.png", 2, 4)}
+                       ObstacleID.OBJ_POLICE: Animation("res\\Police_Animation.png", 2, 4),
+                       ObstacleID.OBJ_PIGEON: Animation("res\\Bottle_Animation.png", 8, 8)}
   if globals.TILE_SIZE != 128:
     _TILE_MAP = {id: pygame.transform.scale(_TILE_MAP[id], (globals.TILE_SIZE, globals.TILE_SIZE)) for id in _TILE_MAP}
     _DYNAMIC_TILE_MAP = {id: pygame.transform.scale(_DYNAMIC_TILE_MAP[id], (globals.TILE_SIZE, globals.TILE_SIZE)) for id in _DYNAMIC_TILE_MAP}
@@ -181,7 +183,8 @@ def init_obstacles(x: float, y: float, time: float, client):
   global _x, _y, _tray
   _x, _y = x, y
   # -------------- ADD OBSTACLES HERE!!! --------------
-  add_obstacle(ObstacleID.OBJ_BOTTLE, 1000, 10e3, client)
+  add_obstacle(ObstacleID.OBJ_PIGEON, 1000, 10e3, client)
+  add_obstacle(ObstacleID.OBJ_BOTTLE, 2e3, 1000, client)
   add_obstacle(ObstacleID.OBJ_DRUNK, 10000, 5e3, client)
   add_obstacle(ObstacleID.OBJ_SPOONS, 5000, 2e3, client)
   add_obstacle(ObstacleID.OBJ_THUG, 7500, 5e3, client)
@@ -217,7 +220,8 @@ def render(surface: pygame.Surface) -> None:
     _ob.render(surface, alpha_surface)
   surface.blit(alpha_surface, (0, 0))
   for _ob in _dynamic_obstacles:
-    _ob.render(surface)
+    gx.filled_circle(surface, _ob._x, _ob._y, 5, (255, 0, 0))
+    gx.aacircle(surface, _ob._x, _ob._y, 6, (255, 0, 0))
 
 def handle_input(event: pygame.event.Event):
   """ Handle events sent to the obstacle manager"""
