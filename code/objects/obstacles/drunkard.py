@@ -29,9 +29,16 @@ class Hobo(Obstacle):
         self.tick_counter = 0
         self.speed = 0.1
         self.current_state = random.choice([HoboState.STATE_SLEEP_LEFT, HoboState.STATE_SLEEP_RIGHT])
+        self.view_dist = 750
 
-    def run_ai(time):
-        pass
+    def run_ai(self, time):
+        dist_to_player = ((self.rect.centerx - self.player.rect.centerx)**2+(self.rect.centery - self.player.rect.centery)**2)**0.5
+        if self.current_state == HoboState.STATE_SLEEP_RIGHT or self.current_state == HoboState.STATE_SLEEP_LEFT:
+            awake_chance = 0.001
+            mult = (self.view_dist-dist_to_player) / self.view_dist
+            if random.random() < mult/100+awake_chance:
+                self.current_state = HoboState.STATE_IDLE
+              
 
     def update(self, key_pressed, time):
         if super().fade_in(time):
@@ -45,7 +52,7 @@ class Hobo(Obstacle):
         self.anims[self.current_state].render_frame(self.surf, 0, 0)
         self.tick_counter += 1
         
-        self.run_ai()
+        self.run_ai(time)
         # Move after adjusting position
         self.adjust_position()
         if self.current_state == HoboState.STATE_WALK_LEFT:

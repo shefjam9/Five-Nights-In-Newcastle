@@ -53,9 +53,9 @@ class MainLoop:
                 elif event.type == pygame.MOUSEBUTTONUP:
                     # TODO remove as just test
                     pos = pygame.mouse.get_pos()
-                    glass_width = 96
-                    pigeon_height = 64
-                    self.game_loop.add_entity(Pigeon(GameLoop.get_current_time(), 
+                    glass_width = 128
+                    pigeon_height = 128
+                    self.game_loop.add_entity(Hobo(GameLoop.get_current_time(), 
                                                     pos[0]-glass_width/2-self.player.obj_offset.x,
                                                     pos[1]-pigeon_height/2-self.player.obj_offset.y, 
                                                     glass_width, pigeon_height, self.game_loop.player))

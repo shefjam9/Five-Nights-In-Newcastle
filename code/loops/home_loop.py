@@ -42,7 +42,7 @@ class HomeLoop:
         
         # Render title
         title_position = Pos(SCREEN_WIDTH / 2, round(SCREEN_HEIGHT * 0.2))
-        self.header_text.render("FIVE NIGHTS AT NEWCASTLE", self.header_text.primary, title_position, True)
+        self.header_text.render("FIVE NIGHTS IN NEWCASTLE", self.header_text.primary, title_position, True)
         self.header_text.increment_header_font_size()
 
         # Render buttons

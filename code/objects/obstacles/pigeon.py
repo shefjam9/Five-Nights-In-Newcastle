@@ -4,6 +4,8 @@ from pygame.locals import K_w, K_s, K_a, K_d
 from misc.logger import log
 from objects.animation import Animation
 from enum import IntFlag
+import random
+import math
 
 class PigeonState(IntFlag):
     STATE_PECKING = 1
@@ -38,7 +40,10 @@ class Pigeon(Obstacle):
             # Vector from pigeon to player
             vec = (self.player.rect.centerx-self.rect.centerx, self.player.rect.centery-self.rect.centery)
             vec_normalized = (vec[0]/dist_to_player, vec[1]/dist_to_player)
-            mov_x, mov_y = vec_normalized[0]*self.speed, vec_normalized[1]*self.speed
+            rand_rad = (random.random()-0.5)
+            rotated_vec = (vec_normalized[0]*math.cos(rand_rad)+vec_normalized[1]*math.sin(rand_rad),
+                           vec_normalized[0]*math.sin(rand_rad)+vec_normalized[1]*math.cos(rand_rad))
+            mov_x, mov_y = rotated_vec[0]*self.speed, rotated_vec[1]*self.speed
 
             # Move and check for collision
             if self.collision_direction != self.current_state and self.collided:
