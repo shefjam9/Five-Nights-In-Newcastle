@@ -37,7 +37,7 @@ class DynamicObstacle:
         _DYNAMIC_TILE_MAP[self._id].update(time)
 
 class Obstacle:
-  def __init__(self, id: ObstacleID, timeout: int, lifespan: int):
+  def __init__(self, id: ObstacleID, timeout: int, lifespan: int, _client):
     """ Instance of a placable obstacle 
     id: ObstacleID of obstacle
     timeout: ms before obstacle can be used again by player"""
@@ -49,6 +49,7 @@ class Obstacle:
     self._x, self._y = 0, 0
     self._current_time = 0
     self._dynamic_lifespan = lifespan
+    self._client = _client
   
   def set_last_used(self, time):
     """ Last used time in ms"""
@@ -105,10 +106,7 @@ class Obstacle:
                 self._current_time, self._dynamic_lifespan)
     self._last_used = self._current_time
     self._isavailable = False
-    #TODO networking here :)
-    # eg. Network.write(obstacleID, x, y, timeout)
-    # Network.send()
-    pass
+    self._client.send_obstacle(self._id, pos[0], pos[1])
 
 def load_tilemap():
   """ Load assets for obstacle tiles"""
@@ -138,9 +136,9 @@ _tray  = None
 
 _showing = False
 
-def add_obstacle(id: ObstacleID, timeout: float, lifespan: int):
+def add_obstacle(id: ObstacleID, timeout: float, lifespan: int, client):
   """ Add obstacle to obstacles"""
-  _obstacles.append(Obstacle(id, timeout, lifespan))
+  _obstacles.append(Obstacle(id, timeout, lifespan, client))
 
 def add_dynamic(id: ObstacleID, pos: tuple, time: float, lifespan: float):
   _dynamic_obstacles.append(DynamicObstacle(id, pos, time, lifespan))
@@ -174,18 +172,18 @@ def calc_bounds():
 
     
 
-def init_obstacles(x: float, y: float, time: float):
+def init_obstacles(x: float, y: float, time: float, client):
   """ Initialise obstacles"""
   # load assets
   load_tilemap()
   global _x, _y, _tray
   _x, _y = x, y
   # -------------- ADD OBSTACLES HERE!!! --------------
-  add_obstacle(ObstacleID.OBJ_BOTTLE, 1000, 10e3)
-  add_obstacle(ObstacleID.OBJ_DRUNK, 10000, 5e3)
-  add_obstacle(ObstacleID.OBJ_SPOONS, 5000, 2e3)
-  add_obstacle(ObstacleID.OBJ_THUG, 7500, 5e3)
-  add_obstacle(ObstacleID.OBJ_POLICE, 11000, 20e3)
+  add_obstacle(ObstacleID.OBJ_BOTTLE, 1000, 10e3, client)
+  add_obstacle(ObstacleID.OBJ_DRUNK, 10000, 5e3, client)
+  add_obstacle(ObstacleID.OBJ_SPOONS, 5000, 2e3, client)
+  add_obstacle(ObstacleID.OBJ_THUG, 7500, 5e3, client)
+  add_obstacle(ObstacleID.OBJ_POLICE, 11000, 20e3, client)
   _tray = pygame.image.load("res\\Tray.png").convert_alpha()
   _x = (globals.SCREEN_DIMENSIONS[0] - _tray.get_width())/2
   _y = globals.SCREEN_DIMENSIONS[1] - 50

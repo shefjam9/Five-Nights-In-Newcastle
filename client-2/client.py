@@ -10,8 +10,11 @@ class Client:
         self.pos = Pos(0, 0)
     
     def send_obstacle(self, id, x, y):
-        self.send_data = f"{id},{x},{y}"
+        s_x = 3600*(x-360)/1200
+        s_y = 3600*y/1200
+        self.send_data = f"{id},{s_x},{s_y}"
         self.socket.sendall(self.send_data.encode())
+        print(f"Sent: {self.send_data}")
 
     def run(self):
         while True:

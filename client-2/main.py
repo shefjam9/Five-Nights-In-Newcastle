@@ -45,13 +45,12 @@ def _init():
   _running = True
   # initialise client objects
   GameMap.init_map()
-  ObstacleManager.init_obstacles(200, 1000, get_client_time_ms())
-
   global _client, _client_thread
   _client = Client('127.0.0.1', 6969)
   _client_thread = threading.Thread(target=_client.run)
   _client_thread.setDaemon(True)
   _client_thread.start()
+  ObstacleManager.init_obstacles(200, 1000, get_client_time_ms(), _client)
 
 def _handle_input():
   """ Handle all input"""
